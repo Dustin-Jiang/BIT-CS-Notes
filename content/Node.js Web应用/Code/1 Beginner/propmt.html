@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+</head>
+
+<body>
+  <script text="text/javascript">
+    let str = prompt("请输入您的月工资")
+    let val = parseInt(str)
+    let ele = document.createElement("progress")
+    let indicator = document.createElement("div")
+    indicator.innerHTML = "计算中 0.00%"
+    let warning = document.createElement("div")
+    warning.innerHTML = "正在调用AI大数据区块链云计算! 请耐心等待! "
+    let display = false
+
+    ele.value = 0
+    
+    document.body.appendChild(indicator)
+    document.body.appendChild(warning)
+    document.body.appendChild(ele)
+    
+    setInterval(() => {
+      indicator.innerHTML = `计算中 ${(ele.value * 100).toFixed(1)}%`
+      if (ele.value >= 1) {
+        if (!isNaN(val) && !display) {
+          display = true
+          alert(`通过AI大数据区块链云计算得出, 您两个月的收入为${val * 2}! `);
+        }
+        return; 
+      }
+      if (ele.value >= 0.95) {
+        ele.value += 0.001;
+        return;
+      }
+      if (ele.value >= 0.8) {
+        ele.value += 0.005;
+        return;
+      }
+      ele.value += 0.01;
+    }, 100)
+  </script>
+</body>
+
+</html>

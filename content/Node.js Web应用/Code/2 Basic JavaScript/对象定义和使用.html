@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+</head>
+
+<body>
+  <script>
+    class Student {
+      name
+      year
+      phone
+      constructor(name, year, phone) {
+        this.name = name
+        this.year = year
+        this.phone = phone
+      }
+
+      contact() {
+        alert(`Calling student ${this.name} at ${this.phone}...`)
+        alert(`${this.name} rejected calling. `)
+      }
+    }
+
+    let s1 = new Student("Rick Astley", 32, "+1-852-283")
+    let s2 = new Object()
+    s2 = {
+      name: "田所浩二",
+      year: 24,
+      phone: "+81-114-514",
+      contact: function() {
+        alert(`Calling student ${this.name} at ${this.phone}...`);
+        alert(`${this.name} rejected calling. `);
+      }
+    }
+    Object.setPrototypeOf(s2, Student.prototype)
+
+    s1.contact();
+    document.write(s1.name)
+    s2.contact(s2)
+    document.write("<br />")
+    document.write(s2.name)
+  </script>
+</body>
+</html>

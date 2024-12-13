@@ -1,0 +1,30 @@
+@use "./base.scss";
+
+// put your custom CSS here!
+@import "fonts/lora.sass";
+@import "fonts/plex-sans.sass";
+@import "fonts/jetbrains-mono.sass";
+@import "fonts/noto-sans-cjk-sc.sass";
+@import "fonts/lxgw-wenkai.sass";
+
+:root {
+  --headerFont: 'Lora', 'LXGW WenKai', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif !important;
+  --bodyFont: 'IBM Plex Sans', 'Noto Sans CJK SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif !important;
+  --codeFont: 'JetBrains Mono', 'Noto Sans CJK SC', ui-monospace, SFMono-Regular, SF Mono, Menlo, monospace !important;
+}
+
+.page-title,
+.article-title {
+  font-style: italic
+}
+
+a.internal {
+  background-color: unset;
+  &:hover {
+    background-color: var(--highlight);
+    border-radius: 0;
+  }
+  &::after {
+    content: "°";
+  }
+}

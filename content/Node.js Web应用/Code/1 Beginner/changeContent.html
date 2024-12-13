@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    * {
+      font-weight: bold !important;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      background-color: black;
+    }
+
+    .yellowBorder {
+      border: solid 5px yellow;
+    }
+    .yellowBorderThin {
+      border: solid 2px yellow;
+    }
+    .redBorderThin {
+      border: solid 2px red;
+    }
+    .yellowBg {
+      background-color: yellow;
+    }
+    .blueBg {
+      background-color: blue;
+    }
+    .redBg {
+      background-color: red;
+    }
+    .whiteColor {
+      color: white;
+    }
+    .yellowColor {
+      color: yellow;
+    }
+    .redColor {
+      color: red;
+    }
+    .font16 {
+      font-size: 16px;
+    }
+    .font32 {
+      font-size: 32px;
+    }
+    .font48 {
+      font-size: 48px;
+    }
+    .font96 {
+      font-size: 96px;
+    }
+    .font128 {
+      font-size: 128px;
+    }
+    .textCenter {
+      text-align: center;
+    }
+    .borderRadius {
+      border-radius: 16px;
+    }
+    .textOutline {
+      -webkit-text-stroke: 3px black;
+    }
+    .letterSpacing {
+      letter-spacing: 4px;
+    }
+    .lineHeight11 {
+      line-height: 1.1;
+    }
+    .padding {
+       padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="yellowBorder" style="width: 500px">
+    <div class="yellowBg yellowBorder textCenter font32 letterSpacing">椰子特产在海南</div>
+    <div class="blueBg textCenter">
+      <div class="whiteColor font32 letterSpacing">正宗椰汁</div>
+      <div class="yellowBorderThin borderRadius redBg whiteColor font96"
+        style="display: flex; justify-content: space-evenly; align-items: baseline; height: 120px;">
+        <div class="lineHeight11">
+          椰
+        </div>
+        <div class="lineHeight11">
+          树
+        </div>
+      </div>
+      <div class="font128 whiteColor textOutline letterSpacing" style="line-height: 1;">
+        <span id="year">25</span>年
+      </div>
+      <div class="yellowColor font32 letterSpacing">坚持在海南岛</div>
+      <div class="yellowBg redColor font32 letterSpacing redBorderThin padding">用新鲜椰子肉</div>
+      <div class="yellowColor textOutline font128 lineHeight11 letterSpacing padding">鲜榨</div>
+      <div class="redBg" style="padding: 10px">
+        <div class="whiteColor font32">不用椰浆不加香精</div>
+        <div class="whiteColor font32">当生榨骗人</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    let ele = document.querySelector("#year")
+    setInterval(() => {
+      ele.innerHTML = parseInt(ele.innerHTML) + 1;
+    }, 3000);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+\begin{thebibliography}{13}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{#1}
+\expandafter\ifx\csname urlstyle\endcsname\relax\else
+  \urlstyle{same}\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \DeclareUrlCommand\doi{\urlstyle{rm}}
+  \def\eprint#1#2{#2}
+\else
+  \def\doi#1{\href{https://doi.org/#1}{\nolinkurl{#1}}}
+  \let\eprint\href
+\fi
+
+\bibitem[段风志(2022)]{deblur}
+段风志.
+\newblock
+  基于可变形卷积网络的视频去模糊算法\allowbreak[EB/OL].
+\newblock 2022.
+\newblock DOI: \doi{10.27061/d.cnki.ghgdu.2022.002329}.
+
+\bibitem[袁环宇(2022)]{bodyPosition}
+袁环宇.
+\newblock
+  基于移动终端的人体姿态检测技术研究与实现\allowbreak[EB/OL].
+\newblock 2022.
+\newblock DOI: \doi{10.27005/d.cnki.gdzku.2022.002624}.
+
+\bibitem[王聪荣(2022)]{faceExp}
+王聪荣.
+\newblock
+  基于轻量化卷积神经网络的表情识别与可视化分析\allowbreak[EB/OL].
+\newblock 2022.
+\newblock DOI: \doi{10.27061/d.cnki.ghgdu.2022.002158}.
+
+\bibitem[程永龙(2022)]{lenet-5}
+程永龙.
+\newblock
+  基于FPGA和Lenet-5的字符识别系统设计与实现\allowbreak[EB/OL].
+\newblock 2022.
+\newblock DOI: \doi{10.27061/d.cnki.ghgdu.2022.001688}.
+
+\bibitem[陈柯成(2022)]{ctDenoise}
+陈柯成.
+\newblock
+  基于机器学习的低剂量CT图像降噪方法研究\allowbreak[EB/OL].
+\newblock 2022.
+\newblock DOI: \doi{10.27005/d.cnki.gdzku.2022.002185}.
+
+\bibitem[张渤钰(2023)]{fpgaAccelerate}
+张渤钰.
+\newblock 基于FPGA的神经网络加速器\allowbreak[EB/OL].
+\newblock 2023.
+\newblock DOI: \doi{10.27005/d.cnki.gdzku.2023.000016}.
+
+\bibitem[龚志宝(2022)]{fiber}
+龚志宝.
+\newblock
+  基于卷积神经网络的多模光纤图像重构研究\allowbreak[EB/OL].
+\newblock 2022.
+\newblock DOI: \doi{10.27061/d.cnki.ghgdu.2022.001240}.
+
+\bibitem[张丽君(2022)]{radar}
+张丽君.
+\newblock 毫米波雷达手势识别轻量化网络研究\allowbreak[EB/OL].
+\newblock 2022.
+\newblock DOI: \doi{10.27005/d.cnki.gdzku.2022.002597}.
+
+\bibitem[王雨江(2022)]{sound}
+王雨江.
+\newblock
+  基于神经网络的声音事件检测系统研究\allowbreak[EB/OL].
+\newblock 2022.
+\newblock DOI: \doi{10.27005/d.cnki.gdzku.2022.003667}.
+
+\bibitem[耿甜甜(2022)]{videoAction}
+耿甜甜.
+\newblock
+  基于时空关系图网络的视频动作识别研究\allowbreak[EB/OL].
+\newblock 2022.
+\newblock DOI: \doi{10.27005/d.cnki.gdzku.2022.003750}.
+
+\bibitem[Zhou et~al.(2019)Zhou, Zhang, Pan, Xie, Zuo, and Ren]{stfan}
+ZHOU S, ZHANG J, PAN J, et~al.
+\newblock Spatio-temporal filter adaptive network for video
+  deblurring\allowbreak[C]//\allowbreak
+Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV).
+\newblock 2019.
+
+\bibitem[Wang et~al.(2019)Wang, Chan, Yu, Dong, and Change~Loy]{edvr}
+WANG X, CHAN K~C, YU K, et~al.
+\newblock Edvr: Video restoration with enhanced deformable convolutional
+  networks\allowbreak[C]//\allowbreak
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR) Workshops.
+\newblock 2019.
+
+\bibitem[Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez,
+  Kaiser, and Polosukhin]{transformer}
+VASWANI A, SHAZEER N, PARMAR N, et~al.
+\newblock Attention is all you need\allowbreak[C/OL]//\allowbreak
+GUYON I, LUXBURG U~V, BENGIO S, et~al.
+\newblock Advances in Neural Information Processing Systems: Vol.~30.
+\newblock Curran Associates, Inc., 2017.
+\newblock
+  \url{https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf}.
+
+\end{thebibliography}

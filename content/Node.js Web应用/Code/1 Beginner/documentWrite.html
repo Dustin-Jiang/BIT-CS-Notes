@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+</head>
+
+<body>
+  <script type="text/javascript">
+    const sleep = () => {
+      return new Promise((resolve, reject) => {
+        setTimeout(resolve, 2000);
+      });
+    };
+    document.write("This is a triumph. ");
+    sleep().then(() => {
+      document.write("I'm making a note here, HUGE success. ");
+    })
+    .then(() => sleep())
+    .then(() => {
+      document.write("It's hard to overstate my satisfaction. ");
+    })
+  </script>
+</body>
+
+</html>

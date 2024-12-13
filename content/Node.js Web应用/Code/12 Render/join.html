@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <style>
+    th {
+      height: 2rem;
+      border: 1px solid black
+    }
+  </style>
+</head>
+
+<body id="root">
+  <script>
+    const root = docuemnt.querySelector("#id");
+
+    const html = 
+  `<table>
+    <tr>
+      <th>Username</th>
+      <th>Password</th>
+    </tr>
+    <tr>
+      <th>${data.username}</th>
+      <th>${data.password}</th>
+    </tr>
+  </table>`
+    root.innerHTML += html
+  </script>
+</body>
+
+</html>

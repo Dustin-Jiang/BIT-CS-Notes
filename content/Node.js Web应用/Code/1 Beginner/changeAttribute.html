@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      padding: unset;
+      margin: unset;
+      background-color: yellow;
+      font-family: "Comic Sans MS";
+    }
+
+    blink {
+      display: block;
+      animation: blinker 1s linear infinite;
+    }
+
+    @keyframes blinker {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .marqueeContainer {
+      height: 100vh; 
+      width: 100vw;
+    }
+    
+    .retro {
+      background-color: red;
+      color: aqua;
+      padding: 5px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <marquee direction="down" behavior="alternate" class="marqueeContainer" truespeed scrolldelay="5" scrollamount="1">
+    <marquee behavior="alternate" truespeed scrolldelay="5" scrollamount="1">
+      <h1>My First Web Application! </h1>
+    </marquee>
+    <marquee behavior="alternate" truespeed scrolldelay="5" scrollamount="1">
+      <div>
+        <blink>1990s Internet visual style looks cool! </blink>
+        <blink>It looks really nice, isn't it? </blink>
+      </div>
+    </marquee>
+    <marquee behavior="alternate" truespeed scrolldelay="5" scrollamount="1">
+      <div class="retro">
+        <blink>I am mercurial! </blink>
+      </div>
+    </marquee>
+  </marquee>
+
+  <script type="text/javascript">
+    let obj = document.querySelector(".retro > blink")
+    let count = 0;
+    const words = [
+      "I will change in 2 seconds by JavaScript!",
+      "I can blink!",
+      "I can jump and bounce!",
+      "The quick brown fox jumps over the lazy dog. "
+    ];
+    const colors = [
+      "aqua",
+      "yellow",
+      "lime",
+      "rosybrown"
+    ]
+    const bgColors = [
+      "red",
+      "blue",
+      "black",
+      "lightgreen"
+    ]
+
+    setInterval(() => {
+      obj.innerHTML = words[count % words.length];
+      count ++;
+      obj.style.color = colors[count % colors.length];
+      obj.style.backgroundColor = bgColors[count % bgColors.length]
+    }, 2000);
+  </script>
+</body>
+
+</html>

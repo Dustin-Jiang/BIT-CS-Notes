@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <style>
+    th {
+      height: 2rem;
+      border: 1px solid black
+    }
+  </style>
+</head>
+
+<body>
+  <table>
+    <tr>
+      <th>Username</th>
+      <th>Password</th>
+    </tr>
+    <tr id="root"></tr>
+  </table>
+
+  <script>
+    (async () => {
+      const response = await fetch("localhost:8000/selectAll")
+      const data = JSON.parse(await response.text())
+
+      const root = docuemnt.querySelector("#id");
+
+      const usernameNode = document.createElement("th");
+      const passwordNode = document.createElement("th");
+
+      const usernameText = document.createTextNode(data.username);
+      const passwordText = document.createTextNode(data.password);
+
+      usernameNode.appendChild(usernameText);
+      passwordNode.appendChild(passwordText);
+
+      root.appendChild(usernameNode);
+      root.appendChild(passwordNode)
+    })()
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+</head>
+
+<body>
+  <script>
+    h = parseInt(prompt("Input hours"))
+
+    s = 0
+
+    method = {
+      0: 50,
+      50: 65,
+      60: 85,
+      70: 90,
+      80: 95,
+      90: 100,
+      100: 100,
+      110: 95,
+      120: 90,
+      120: 85,
+      140: 80,
+      150: 75
+    }
+
+    val = [
+      150,
+      140,
+      130,
+      120,
+      110, 
+      100,
+      90,
+      80,
+      70,
+      60,
+      50,
+      0
+    ]
+
+    for (i of val) {
+      if (h > i) {
+        s += (h - i) * method[i]
+        s += i
+      }
+    }
+
+    alert(s)
+  </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+</head>
+
+<body>
+  <script>
+    class Student {
+      name;
+      gender;
+      year;
+      phone;
+      constructor(name, gender, year, phone) {
+        this.name = name;
+        this.gender = gender;
+        this.year = year;
+        this.phone = phone;
+      }
+
+      contact() {
+        alert(`Calling student ${this.name} at ${this.phone}...`);
+        alert(`${this.name} rejected calling. `);
+      }
+    }
+
+    let s1 = new Student("Rick Astley", "Male", 32, "+1-852-283");
+    
+    for (prop in s1) {
+      document.write(prop)
+      document.write("<br />")
+      document.write(s1[prop])
+      document.write("<br />")
+    }
+  </script>
+</body>
+
+</html>
