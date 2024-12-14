@@ -11,3 +11,9 @@ replit.nix
 .stversions
 .trash
 .nomedia
+
+# >>> LARGE FILES
+content/大学物理实验/英汉大学物理实验.pdf
+content/工科数学分析 II/教材/工科数学分析（下）.pdf
+content/概率论与数理统计/教材/概率论与数理统计_房永飞,赵颖,田玉斌_机械工业出版社.pdf
+# <<< LARGE FILES
