@@ -1,10 +1,12 @@
 $$S = \{e, a, b, c\}$$
+
 $$* = \begin{matrix}
 e & a & b & c \\
 a & e & c & b \\
 b & c & e & a \\
 c & b & a & e
 \end{matrix}$$
+
 $G=<S, *>$ 称为 Klein 四元群. 
 
 - 满足交换律;
