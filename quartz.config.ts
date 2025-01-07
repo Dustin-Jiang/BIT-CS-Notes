@@ -15,7 +15,7 @@ const config: QuartzConfig = {
     // analytics: {
     //   provider: "plausible",
     // },
-    analytics: null,
+    analytics: { provider: 'google', tagId: 'G-P8LEYB1KTM' },
     locale: "zh-CN",
     baseUrl: "notes.tsukino.top",
     ignorePatterns: ["private", "templates", ".obsidian"],
