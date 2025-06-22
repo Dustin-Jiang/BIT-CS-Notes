@@ -1,0 +1,64 @@
+erDiagram
+    CAMPUS {
+        int id PK
+        string name
+        string address
+    }
+    
+    CLINIC_USER {
+        int id PK
+        string name
+        string school_id
+        string phone_number
+        string password_hash
+    }
+    
+    WORKER {
+        int id PK,FK
+        int campus FK
+    }
+    
+    ADMIN {
+        int id PK,FK
+    }
+    
+    SCHEDULE {
+        int id PK
+        int campus_id FK
+        date date
+        time start_time
+        time end_time
+        int capacity
+    }
+    
+    APPOINTMENT {
+        int id PK
+        int user_id FK
+        int worker_id FK
+        int schedule_id FK
+        string description
+        string worker_caption
+        string reject_reason
+        string computer_model
+        timestamp arrive_time
+        int status
+    }
+    
+    ANNOUNCEMENT {
+        int id PK
+        string title
+        string content
+        timestamp publish_time
+        timestamp expire_time
+        int priority
+        int last_editor FK
+    }
+    
+    CLINIC_USER ||--o{ APPOINTMENT : "预约"
+    WORKER ||--o{ APPOINTMENT : "处理"
+    WORKER ||--o{ ANNOUNCEMENT : "发布"
+    SCHEDULE ||--o{ APPOINTMENT : "包含"
+    CAMPUS ||--o{ SCHEDULE : "安排"
+    CAMPUS ||--o{ WORKER : "分配"
+    CLINIC_USER ||--o{ WORKER : "继承"
+    WORKER ||--o{ ADMIN : "继承"

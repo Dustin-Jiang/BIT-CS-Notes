@@ -1,0 +1,1 @@
+CREATE USER cloudb WITH SYSADMIN PASSWORD 'Test-0penGaussServer-DustinNas';

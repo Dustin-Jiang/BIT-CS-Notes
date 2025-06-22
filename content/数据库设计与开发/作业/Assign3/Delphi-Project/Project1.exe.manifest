@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
+    <assemblyIdentity
+      version="1.0.0.0"
+      processorArchitecture="X86"
+      name="Application"
+      type="win32"
+    />
+    <asmv3:application>
+      <asmv3:windowsSettings>
+        <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">False</dpiAware>
+        <gdiScaling xmlns="http://schemas.microsoft.com/SMI/2017/WindowsSettings">True</gdiScaling>
+      </asmv3:windowsSettings>
+    </asmv3:application>
+
+    <description>Description</description>
+    <dependency> 
+      <dependentAssembly>
+        <assemblyIdentity
+          type="win32"
+          name="Microsoft.Windows.Common-Controls"
+          version="6.0.0.0"
+          processorArchitecture="x86"
+          publicKeyToken="6595b64144ccf1df"
+          language="*"
+        />
+      </dependentAssembly>
+    </dependency>
+</assembly>

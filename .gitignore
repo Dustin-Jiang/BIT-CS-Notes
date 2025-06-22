@@ -12,8 +12,28 @@ replit.nix
 .trash
 .nomedia
 
+.stfolder
+.sync*
+
 # >>> LARGE FILES
+content/工科数学分析 I/教材/高等数学第8版上册 - 同济大学数学科学学院 - 高等教育出版社.pdf
+content/工科数学分析 I/教材/高等数学第8版下册 - 同济大学数学科学学院 - 高等教育出版社.pdf
+content/学术用途英语一级/理工专业通用学术英语 - 基础篇.pdf
+content/离散数学/教材/离散数学第2版 [屈婉玲，耿素云，张立昂 编著] 2015年版.pdf
+content/离散数学/教材/离散数学 -- 屈婉玲 -- 科学教育丛书, 2015 -- 高等教育出版社 -- Anna’s Archive.pdf
+content/电路分析基础/教材/电路分析基础 上册 李瀚荪 OCR_含目录.pdf
+content/电路分析基础/教材/电路分析基础 上册 李瀚荪.pdf
 content/大学物理实验/英汉大学物理实验.pdf
 content/工科数学分析 II/教材/工科数学分析（下）.pdf
 content/概率论与数理统计/教材/概率论与数理统计_房永飞,赵颖,田玉斌_机械工业出版社.pdf
+content/数据结构与算法基础/教材/计算机算法设计与分析  第5版.pdf
+content/数据结构与算法基础/教材/数据结构精讲与习题详解 C语言版 第2版 殷人昆编著.pdf
+content/数据库设计与开发/教材/数据库系统基础教程 原书第3版 - （美）厄尔曼 - Chinese (机械工业出版社) (Z-Library).pdf
+content/软件需求工程与UML建模/课件/需求工程——软件建模与分析（第2版） - 骆斌, 丁二玉 - Chinese (高等教育出版社).pdf
+content/线性代数B/教材/线性代数及其应用 - David C. Lay - 机械工业出版社.pdf
+content/毛泽东思想和中国特色社会主义理论概论/毛泽东思想和中国特色社会主义理论体系概论（2023年版） - 本书编写组 - Chinese (高等教育出版社) (Z-Library).pdf
+content/计算机图形学与可视化计算/第一课.rar
+content/大学物理/课件/2_大学物理学习指导与习题解答_14304696(1).pdf
+content/大学物理/教材/大学物理 第三卷 电磁学.pdf
+content/大学物理/教材/大学物理学习指导与习题解答.pdf
 # <<< LARGE FILES

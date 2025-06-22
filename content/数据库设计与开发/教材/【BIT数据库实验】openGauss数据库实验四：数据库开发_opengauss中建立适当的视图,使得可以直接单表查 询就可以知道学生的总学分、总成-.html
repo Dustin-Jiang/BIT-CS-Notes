@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+ <head>
+  <meta charset="utf-8"/>
+  <link href="https://blog.csdn.net/Alice2O3/article/details/124679367" rel="canonical"/>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+  <meta content="webkit" name="renderer">
+   <meta content="webkit" name="force-rendering">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+    <meta content="always" name="referrer"/>
+    <meta content="no-siteapp" http-equiv="Cache-Control">
+     <link href="#" media="handheld" rel="alternate"/>
+     <meta content="pc" name="applicable-device"/>
+     <link href="https://g.csdnimg.cn/static/logo/favicon32.ico" rel="shortcut icon" type="image/x-icon"/>
+     <title>
+      【BIT数据库实验】openGauss数据库实验四：数据库开发_opengauss中建立适当的视图,使得可以直接单表查 询就可以知道学生的总学分、总成-CSDN博客
+     </title>
+     <meta content="opengauss中建立适当的视图,使得可以直接单表查 询就可以知道学生的总学分、总成" name="keywords"/>
+     <meta content='{"autorun":true,"install":true,"keyword":"opengauss中建立适当的视图,使得可以直接单表查 询就可以知道学生的总学分、总成"}' name="csdn-baidu-search"/>
+     <meta content="文章浏览阅读1.4k次，点赞3次，收藏9次。BIT赵小林openGauss数据库实验四——数据库开发_opengauss中建立适当的视图,使得可以直接单表查 询就可以知道学生的总学分、总成" name="description"/>
+     <link href="https://csdnimg.cn/release/blogv2/dist/pc/css/detail_enter-097f33faa6.min.css" rel="stylesheet" type="text/css"/>
+     <link href="https://csdnimg.cn/release/blogv2/dist/pc/themesSkin/skin-sea/skin-sea-d3a08c2048.min.css" rel="stylesheet" type="text/css"/>
+     <meta content='{"type":"0","fixModel":"1"}' name="toolbar"/>
+     <link href="https://csdnimg.cn/public/sandalstrap/1.4/css/sandalstrap.min.css" rel="stylesheet" type="text/css"/>
+     <style>
+      .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+     </style>
+    </meta>
+   </meta>
+  </meta>
+  <style type="text/css">
+   * { user-select: text; } pre{max-height: none!important; overflow-y: hidden;}
+  </style>
+ </head>
+ <body class="nodata" style="">
+  <link href="https://csdnimg.cn/release/blogv2/dist/pc/css/blog_code-01256533b5.min.css" rel="stylesheet"/>
+  <link href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/chart-3456820cac.css" rel="stylesheet">
+   <link href="https://g.csdnimg.cn/lib/swiper/6.0.4/css/swiper.css" rel="stylesheet">
+    <div class="main_father clearfix d-flex justify-content-center mainfather-concision" style="height:100%;">
+     <div class="container clearfix container-concision" id="mainBox">
+      <main>
+       <div class="blog-content-box">
+        <div class="article-header-box">
+         <div class="article-header">
+          <div class="article-title-box">
+           <h1 class="title-article" id="articleContentId">
+            【BIT数据库实验】openGauss数据库实验四：数据库开发
+           </h1>
+          </div>
+          <div class="article-info-box">
+           <div class="article-bar-top">
+            <img alt="" class="article-type-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/original.png"/>
+            <div class="bar-content">
+             <a class="article-vip-box" data-report-click='{"spm":"3001.10404"}' data-report-query="spm=3001.10404" data-report-view='{"spm":"3001.10404"}' href="https://mall.csdn.net/vip" target="_blank">
+              <img alt="" class="article-vip-img-new" src="https://csdnimg.cn/release/blogv2/dist/pc/img/identityVipNew.png"/>
+             </a>
+             <a class="follow-nickName" href="https://blog.csdn.net/Alice2O3" rel="noopener" target="_blank" title="Alice2O3">
+              Alice2O3
+             </a>
+             <img alt="" class="article-time-img article-heard-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newUpTime2.png"/>
+             <span class="time">
+              已于 2022-05-13 02:57:31 修改
+             </span>
+             <div class="read-count-box">
+              <img alt="" class="article-read-img article-heard-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/articleReadEyes2.png"/>
+              <span class="read-count">
+               阅读量1.4k
+              </span>
+              <a class="un-collection" data-report-click='{"mod":"popu_823","spm":"1001.2101.3001.4232","ab":"new"}' id="blog_detail_zk_collection">
+               <img alt="" class="article-collect-img article-heard-img un-collect-status isdefault" src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollect2.png" style="display:inline-block"/>
+               <img alt="" class="article-collect-img article-heard-img collect-status isactive" src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollectionActive2.png" style="display:none"/>
+               <span class="name">
+                收藏
+               </span>
+               <span class="get-collection">
+                9
+               </span>
+              </a>
+              <div class="read-count-box is-like">
+               <img alt="" class="article-read-img article-heard-img" id="is-like-imgactive-new" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newHeart2023Active.png" style="display:none"/>
+               <img alt="" class="article-read-img article-heard-img" id="is-like-img-new" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newHeart2023Black.png" style="display:block"/>
+               <span class="read-count" id="blog-digg-num">
+                点赞数
+                            3
+               </span>
+              </div>
+             </div>
+            </div>
+           </div>
+           <div class="blog-tags-box">
+            <div class="tags-box artic-tag-box">
+             <span class="label">
+              文章标签：
+             </span>
+             <a class="tag-link" data-report-click='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"数据库开发","ab":"new","extra":"{\"searchword\":\"数据库开发\"}"}' data-report-query="spm=1001.2101.3001.4223" data-report-view='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"数据库开发","ab":"new","extra":"{\"searchword\":\"数据库开发\"}"}' href="https://so.csdn.net/so/search/s.do?q=%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BC%80%E5%8F%91&amp;t=all&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=&amp;from_tracking_code=tag_word&amp;from_code=app_blog_art" rel="noopener" target="_blank">
+              数据库开发
+             </a>
+             <a class="tag-link" data-report-click='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"视图","ab":"new","extra":"{\"searchword\":\"视图\"}"}' data-report-query="spm=1001.2101.3001.4223" data-report-view='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"视图","ab":"new","extra":"{\"searchword\":\"视图\"}"}' href="https://so.csdn.net/so/search/s.do?q=%E8%A7%86%E5%9B%BE&amp;t=all&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=&amp;from_tracking_code=tag_word&amp;from_code=app_blog_art" rel="noopener" target="_blank">
+              视图
+             </a>
+             <a class="tag-link" data-report-click='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"存储过程","ab":"new","extra":"{\"searchword\":\"存储过程\"}"}' data-report-query="spm=1001.2101.3001.4223" data-report-view='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"存储过程","ab":"new","extra":"{\"searchword\":\"存储过程\"}"}' href="https://so.csdn.net/so/search/s.do?q=%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B&amp;t=all&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=&amp;from_tracking_code=tag_word&amp;from_code=app_blog_art" rel="noopener" target="_blank">
+              存储过程
+             </a>
+             <a class="tag-link" data-report-click='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"学籍管理","ab":"new","extra":"{\"searchword\":\"学籍管理\"}"}' data-report-query="spm=1001.2101.3001.4223" data-report-view='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"学籍管理","ab":"new","extra":"{\"searchword\":\"学籍管理\"}"}' href="https://so.csdn.net/so/search/s.do?q=%E5%AD%A6%E7%B1%8D%E7%AE%A1%E7%90%86&amp;t=all&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=&amp;from_tracking_code=tag_word&amp;from_code=app_blog_art" rel="noopener" target="_blank">
+              学籍管理
+             </a>
+             <a class="tag-link" data-report-click='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"成绩计算","ab":"new","extra":"{\"searchword\":\"成绩计算\"}"}' data-report-query="spm=1001.2101.3001.4223" data-report-view='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"成绩计算","ab":"new","extra":"{\"searchword\":\"成绩计算\"}"}' href="https://so.csdn.net/so/search/s.do?q=%E6%88%90%E7%BB%A9%E8%AE%A1%E7%AE%97&amp;t=all&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=&amp;from_tracking_code=tag_word&amp;from_code=app_blog_art" rel="noopener" target="_blank">
+              成绩计算
+             </a>
+            </div>
+           </div>
+           <div class="up-time">
+            <span>
+             于 2022-05-10 11:55:39 首次发布
+            </span>
+           </div>
+           <div class="slide-content-box">
+            <div class="article-copyright">
+             <div class="creativecommons">
+              版权声明：本文为博主原创文章，遵循
+              <a href="http://creativecommons.org/licenses/by-sa/4.0/" rel="noopener" target="_blank">
+               CC 4.0 BY-SA
+              </a>
+              版权协议，转载请附上原文出处链接和本声明。
+             </div>
+             <div class="article-source-link">
+              本文链接：
+              <a href="https://blog.csdn.net/Alice2O3/article/details/124679367" target="_blank">
+               https://blog.csdn.net/Alice2O3/article/details/124679367
+              </a>
+             </div>
+            </div>
+           </div>
+           <div class="operating">
+            <a class="href-article-edit slide-toggle">
+             版权
+            </a>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div id="blogHuaweiyunAdvert">
+        </div>
+        <article class="baidu_pl">
+         <div class="article_content clearfix" id="article_content">
+          <link href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css" rel="stylesheet"/>
+          <link href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-704d5b9767.css" rel="stylesheet"/>
+          <div class="markdown_views prism-atom-one-dark" id="content_views">
+           <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
+           </svg>
+           <h2>
+            <a id="_0">
+            </a>
+            实验四：数据库开发
+           </h2>
+           <h3>
+            <a id="_2">
+            </a>
+            实验任务：
+           </h3>
+           <ul>
+            <li>
+             <p>
+              建立“学籍与成绩管理系统”表格；
+             </p>
+             <ul>
+              <li>
+               不建立表之间的参照关系
+              </li>
+              <li>
+               输入数据，以便在表上进行各种操作
+              </li>
+             </ul>
+            </li>
+            <li>
+             <p>
+              视图
+             </p>
+             <ul>
+              <li>
+               计算学生的总学分、总成绩；
+               <ul>
+                <li>
+                 建立适当的视图，使得可以直接单表查询就可以知道学生的总学分、总成绩；
+                </li>
+                <li>
+                 建立适当的视图，将所有的表连接起来，观察数据，体会建立多个表的好处；
+                </li>
+                <li>
+                 建立单表的视图，练习通过视图来更新、删除数据；
+                </li>
+                <li>
+                 建立多表的视图，练习通过视图来更新、删除数据；
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li>
+             <p>
+              存储过程
+             </p>
+             <ul>
+              <li>
+               在“学籍与成绩管理系统”表格中输入不符合系统要求的数据（如学生学籍表中学号重复），建立适当的存储过程，分别查找和删除这些不合法的数据；
+              </li>
+              <li>
+               建立适当的存储过程，计算学生的总学分、总成绩，并保存在另外一张表中；
+              </li>
+              <li>
+               查询总成绩表，并进行排序。
+              </li>
+             </ul>
+            </li>
+           </ul>
+           <p>
+            以下实验使用的相关软件和参考文档可以通过这个网盘地址下载：
+           </p>
+           <p>
+            链接:
+            <a href="https://pan.baidu.com/s/1Utlmw6Gfrspybw-eV88eEw" rel="nofollow">
+             https://pan.baidu.com/s/1Utlmw6Gfrspybw-eV88eEw
+            </a>
+           </p>
+           <p>
+            提取码: 3g8z
+           </p>
+           <h3>
+            <a id="_26">
+            </a>
+            实验步骤：
+           </h3>
+           <h4>
+            <a id="_28">
+            </a>
+            一：将数据库恢复初始状态，建立无参照关系的表格
+           </h4>
+           <p>
+            这次建立的表数据和实验一相同，只不过这回表中无主键和外键，表中也不存在索引。
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> xk <span class="token keyword">CASCADE</span><span class="token punctuation">;</span>
+<span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> sk <span class="token keyword">CASCADE</span><span class="token punctuation">;</span>
+<span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> js <span class="token keyword">CASCADE</span><span class="token punctuation">;</span>
+<span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> kc <span class="token keyword">CASCADE</span><span class="token punctuation">;</span>
+<span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> xs <span class="token keyword">CASCADE</span><span class="token punctuation">;</span>
+<span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> xyb <span class="token keyword">CASCADE</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> xyb<span class="token punctuation">(</span>
+	ydh <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	ymc <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> xs<span class="token punctuation">(</span>
+	xm <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">24</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	xh <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	ydh <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	bj <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	chrq <span class="token keyword">DATE</span><span class="token punctuation">,</span>
+	xb <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> kc<span class="token punctuation">(</span>
+	kcbh <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	kc <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">48</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	lx <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	xf <span class="token keyword">DECIMAL</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> js<span class="token punctuation">(</span>
+	xm <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">24</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	jsbh <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	zc <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">18</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	ydh <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> sk<span class="token punctuation">(</span>
+	kcbh <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	bh <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> xk<span class="token punctuation">(</span>
+	xh <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	kcbh <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	jsbh <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	cj <span class="token keyword">DECIMAL</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            由于我们对表进行了删除和重新建立，因此我们需要重新将数据插入进去（插入数据详情见实验三）。同理，我们也可以把这个插入过程定义为一个存储过程
+            <code>
+             proc_restore_database_2()
+            </code>
+            ;
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/211401aa78a38cc2abfeb23c1cce0266.png#pic_center"/>
+           </p>
+           <p>
+            然后要调用这个函数的话，直接使用以下语句即可。
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">CALL</span> proc_restore_database_2<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            执行这个函数之后，数据库就变回这个实验的初始状态。
+           </p>
+           <h4>
+            <a id="_92">
+            </a>
+            二：建立视图
+           </h4>
+           <h5>
+            <a id="1__94">
+            </a>
+            1. 建立适当的视图，使得可以直接单表查询就可以知道学生的总学分、总成绩；
+           </h5>
+           <p>
+            我们先创建名字为cj_view的视图，其中cj_view代表各个学生选择课程最高分的那次成绩，以及课程对应的学分。
+           </p>
+           <p>
+            sql源码如下：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">DROP</span> <span class="token keyword">VIEW</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> cj_view<span class="token punctuation">;</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">VIEW</span> cj_view<span class="token punctuation">(</span>xm<span class="token punctuation">,</span>xh<span class="token punctuation">,</span>kc<span class="token punctuation">,</span>kcbh<span class="token punctuation">,</span>xf<span class="token punctuation">,</span>cj<span class="token punctuation">)</span> <span class="token keyword">AS</span> <span class="token punctuation">(</span>
+  <span class="token keyword">SELECT</span> xm<span class="token punctuation">,</span>xh<span class="token punctuation">,</span>kc<span class="token punctuation">,</span>kcbh<span class="token punctuation">,</span>NVL<span class="token punctuation">(</span>xf<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>NVL<span class="token punctuation">(</span><span class="token function">MAX</span><span class="token punctuation">(</span>cj<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> <span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> xs<span class="token punctuation">.</span>xm<span class="token punctuation">,</span>xs<span class="token punctuation">.</span>xh<span class="token punctuation">,</span>kc<span class="token punctuation">.</span>kc<span class="token punctuation">,</span>kc<span class="token punctuation">.</span>kcbh<span class="token punctuation">,</span>kc<span class="token punctuation">.</span>xf<span class="token punctuation">,</span>xk<span class="token punctuation">.</span>cj <span class="token keyword">FROM</span> <span class="token punctuation">(</span>
+      xs <span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> xk <span class="token keyword">ON</span> <span class="token punctuation">(</span>xs<span class="token punctuation">.</span>xh <span class="token operator">=</span> xk<span class="token punctuation">.</span>xh<span class="token punctuation">)</span> <span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> kc <span class="token keyword">ON</span> <span class="token punctuation">(</span>xk<span class="token punctuation">.</span>kcbh <span class="token operator">=</span> kc<span class="token punctuation">.</span>kcbh<span class="token punctuation">)</span>
+    <span class="token punctuation">)</span>
+  <span class="token punctuation">)</span> <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> <span class="token punctuation">(</span>xm<span class="token punctuation">,</span>xh<span class="token punctuation">,</span>kc<span class="token punctuation">,</span>kcbh<span class="token punctuation">,</span>xf<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            然后我们先通过
+            <code>
+             SELECT * FROM cj_view
+            </code>
+            观察所有的数据：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/96119fab5a3b4dfda9445432bc598943.png#pic_center"/>
+           </p>
+           <p>
+            之后，我们可以运行以下sql语句查询各个学生的总学分、总成绩，按照总成绩，总学分从高到低排序：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">SELECT</span>
+  xm<span class="token punctuation">,</span>
+  xh<span class="token punctuation">,</span>
+  <span class="token function">sum</span><span class="token punctuation">(</span>xf<span class="token punctuation">)</span> <span class="token keyword">AS</span> zxf<span class="token punctuation">,</span>
+  <span class="token keyword">CASE</span> <span class="token keyword">WHEN</span> <span class="token function">sum</span><span class="token punctuation">(</span>xf<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token number">0</span> <span class="token keyword">THEN</span> <span class="token number">0</span> <span class="token keyword">ELSE</span> <span class="token function">ROUND</span><span class="token punctuation">(</span><span class="token function">sum</span><span class="token punctuation">(</span>cj <span class="token operator">*</span> xf<span class="token punctuation">)</span><span class="token operator">/</span><span class="token function">sum</span><span class="token punctuation">(</span>xf<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token keyword">END</span> <span class="token keyword">AS</span> zcj
+<span class="token keyword">FROM</span> cj_view
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> xm<span class="token punctuation">,</span>xh
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> zcj <span class="token keyword">DESC</span><span class="token punctuation">,</span>zxf <span class="token keyword">DESC</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            代码运行结果为：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/2cc1fdadeb2fd3a101c4c9aa8ed80466.png#pic_center"/>
+           </p>
+           <p>
+            由此可见，建立适当的视图可以很容易直接进行单表查询就可以知道总学分，总成绩以及对应排名，大大简化代码，提高编写效率。
+           </p>
+           <h5>
+            <a id="2__132">
+            </a>
+            2. 建立适当的视图，将所有的表连接起来，观察数据，体会建立多个表的好处；
+           </h5>
+           <p>
+            通过多层JOIN语句，可以建立适当的视图将所有的表连接起来。
+           </p>
+           <p>
+            这里我们假设以同学的选课表为主体，所有的表连接起来的结果为：
+           </p>
+           <p>
+            （学生姓名，学生学号，学生学院名称，学生学院代号，班级，出生日期，性别，课程，课程编号，授课教师姓名，教师编号，教师学院名称，教师学院代号，教师职称，课程类型，课程学分，学生成绩）
+           </p>
+           <p>
+            sql源码如下：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">DROP</span> <span class="token keyword">VIEW</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> showall<span class="token punctuation">;</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">VIEW</span> showall <span class="token keyword">AS</span> <span class="token punctuation">(</span>
+  <span class="token keyword">SELECT</span> 
+	xs<span class="token punctuation">.</span>xm <span class="token keyword">AS</span> xs_xm<span class="token punctuation">,</span>
+	xs<span class="token punctuation">.</span>xh <span class="token keyword">AS</span> xs_xh<span class="token punctuation">,</span>
+	xyb_1<span class="token punctuation">.</span>ymc <span class="token keyword">AS</span> xs_ymc<span class="token punctuation">,</span>
+	xs<span class="token punctuation">.</span>ydh <span class="token keyword">AS</span> xs_ydh<span class="token punctuation">,</span>
+	xs<span class="token punctuation">.</span>bj<span class="token punctuation">,</span>
+	xs<span class="token punctuation">.</span>chrq<span class="token punctuation">,</span>
+	xs<span class="token punctuation">.</span>xb<span class="token punctuation">,</span>
+	kc<span class="token punctuation">.</span>kc<span class="token punctuation">,</span>
+	kc<span class="token punctuation">.</span>kcbh<span class="token punctuation">,</span>
+	js<span class="token punctuation">.</span>xm <span class="token keyword">AS</span> js_xm<span class="token punctuation">,</span>
+	js<span class="token punctuation">.</span>jsbh<span class="token punctuation">,</span>
+	xyb_2<span class="token punctuation">.</span>ymc <span class="token keyword">AS</span> js_ymc<span class="token punctuation">,</span>
+	js<span class="token punctuation">.</span>ydh <span class="token keyword">AS</span> js_ydh<span class="token punctuation">,</span>
+	js<span class="token punctuation">.</span>zc<span class="token punctuation">,</span>
+	kc<span class="token punctuation">.</span>lx<span class="token punctuation">,</span>
+	kc<span class="token punctuation">.</span>xf<span class="token punctuation">,</span>
+	xk<span class="token punctuation">.</span>cj
+  <span class="token keyword">FROM</span> <span class="token punctuation">(</span>
+    xs <span class="token keyword">JOIN</span> xyb <span class="token keyword">AS</span> xyb_1 <span class="token keyword">ON</span> <span class="token punctuation">(</span>xs<span class="token punctuation">.</span>ydh <span class="token operator">=</span> xyb_1<span class="token punctuation">.</span>ydh<span class="token punctuation">)</span>
+    <span class="token keyword">JOIN</span> xk <span class="token keyword">ON</span> <span class="token punctuation">(</span>xs<span class="token punctuation">.</span>xh <span class="token operator">=</span> xk<span class="token punctuation">.</span>xh<span class="token punctuation">)</span>
+    <span class="token keyword">JOIN</span> kc <span class="token keyword">ON</span> <span class="token punctuation">(</span>xk<span class="token punctuation">.</span>kcbh <span class="token operator">=</span> kc<span class="token punctuation">.</span>kcbh<span class="token punctuation">)</span>
+    <span class="token keyword">JOIN</span> js <span class="token keyword">ON</span> <span class="token punctuation">(</span>js<span class="token punctuation">.</span>jsbh <span class="token operator">=</span> xk<span class="token punctuation">.</span>jsbh<span class="token punctuation">)</span>
+    <span class="token keyword">JOIN</span> xyb <span class="token keyword">AS</span> xyb_2 <span class="token keyword">ON</span> <span class="token punctuation">(</span>js<span class="token punctuation">.</span>ydh <span class="token operator">=</span> xyb_2<span class="token punctuation">.</span>ydh<span class="token punctuation">)</span> 
+  <span class="token punctuation">)</span>
+  <span class="token keyword">ORDER</span> <span class="token keyword">BY</span> <span class="token punctuation">(</span>xs_xm<span class="token punctuation">,</span>js_xm<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            然后运行
+            <code>
+             SELECT * FROM cj_view
+            </code>
+            ，结果如下：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/78773a3b4ee850be1b2673b440bec213.png#pic_center"/>
+           </p>
+           <p>
+            可以看到所有的表都已经连接了起来。
+           </p>
+           <p>
+            在实验感受中将会详细阐述建立多个表的好处。
+           </p>
+           <h5>
+            <a id="3__181">
+            </a>
+            3. 建立单表的视图，练习通过视图来更新、删除数据；
+           </h5>
+           <p>
+            我们假设这样的情景：
+           </p>
+           <p>
+            P1. 查找分数&lt;60分的成绩，对他们的成绩进行“开根号再乘以十”的操作。
+           </p>
+           <p>
+            P2. 进行完P1操作后，再查找分数&lt;60分的成绩，并且删除这些数据。
+           </p>
+           <p>
+            由于我们只是对于成绩进行操作，因此我们不关心课程名称，我们只需要提取学号，课程编号，课程成绩这一栏即可。
+           </p>
+           <p>
+            这时候，我们可以建立以下的单表视图。为了更方便调试输出结果，我们可以先调用将数据库恢复到初始状态的存储过程。
+           </p>
+           <pre><code class="prism language-sql"><span class="token comment">/*Restore the database*/</span>
+<span class="token keyword">CALL</span> proc_restore_database_2<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/*Create single view*/</span>
+<span class="token keyword">CREATE</span> <span class="token operator">OR</span> <span class="token keyword">REPLACE</span> <span class="token keyword">VIEW</span> single_view<span class="token punctuation">(</span><span class="token string">"学生学号"</span><span class="token punctuation">,</span><span class="token string">"课程编号"</span><span class="token punctuation">,</span><span class="token string">"课程成绩"</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> <span class="token punctuation">(</span>
+  <span class="token keyword">SELECT</span> xh<span class="token punctuation">,</span>kcbh<span class="token punctuation">,</span>cj <span class="token keyword">FROM</span> xk
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/*Select Data from single view*/</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> single_view<span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            输出结果如下图所示，我们注意到
+            <code>
+             single_view('学生学号','课程编号','课程成绩')
+            </code>
+            相当于对返回的内容进行重命名。
+           </p>
+           <p>
+            <strong>
+             由于opengauss使用的数据库视图默认为只读模式，不支持直接更新和删除操作，因此要想使用视图来更新、删除数据，必须使用规则(Rule)实现。
+            </strong>
+           </p>
+           <p>
+            因此，我们还需要定义对于更新和删除操作的规则。
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">CREATE</span> <span class="token operator">OR</span> <span class="token keyword">REPLACE</span> <span class="token keyword">RULE</span> single_view_UPDATE <span class="token keyword">AS</span> <span class="token keyword">ON</span> <span class="token keyword">UPDATE</span> <span class="token keyword">TO</span> single_view <span class="token keyword">DO</span> INSTEAD <span class="token punctuation">(</span>
+  <span class="token keyword">UPDATE</span> xk <span class="token keyword">SET</span> cj <span class="token operator">=</span> NEW<span class="token punctuation">.</span><span class="token string">"课程成绩"</span> <span class="token keyword">WHERE</span> <span class="token punctuation">(</span>xk<span class="token punctuation">.</span>xh<span class="token punctuation">,</span>xk<span class="token punctuation">.</span>kcbh<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">(</span>OLD<span class="token punctuation">.</span><span class="token string">"学生学号"</span><span class="token punctuation">,</span>OLD<span class="token punctuation">.</span><span class="token string">"课程编号"</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">CREATE</span> <span class="token operator">OR</span> <span class="token keyword">REPLACE</span> <span class="token keyword">RULE</span> single_view_DELETE <span class="token keyword">AS</span> <span class="token keyword">ON</span> <span class="token keyword">DELETE</span> <span class="token keyword">TO</span> single_view <span class="token keyword">DO</span> INSTEAD <span class="token punctuation">(</span>
+  <span class="token keyword">DELETE</span> <span class="token keyword">FROM</span> xk <span class="token keyword">WHERE</span> <span class="token punctuation">(</span>xk<span class="token punctuation">.</span>xh<span class="token punctuation">,</span>xk<span class="token punctuation">.</span>kcbh<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">(</span>OLD<span class="token punctuation">.</span><span class="token string">"学生学号"</span><span class="token punctuation">,</span>OLD<span class="token punctuation">.</span><span class="token string">"课程编号"</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            定义完这些规则之后，我们就可以直接对视图中的数据进行更改。
+           </p>
+           <p>
+            P1. 找到分数&lt;60分的成绩，对他们的成绩进行“开根号再乘以十”的操作。
+           </p>
+           <p>
+            相关语句如下：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> single_view <span class="token keyword">WHERE</span> <span class="token string">"学生学号"</span> <span class="token operator">=</span> <span class="token string">'1887592443'</span><span class="token punctuation">;</span>
+<span class="token keyword">UPDATE</span> single_view
+<span class="token keyword">SET</span> <span class="token string">"课程成绩"</span> <span class="token operator">=</span> sqrt<span class="token punctuation">(</span><span class="token string">"课程成绩"</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">10</span>
+<span class="token keyword">WHERE</span> <span class="token string">"课程成绩"</span> <span class="token operator">&lt;</span> <span class="token number">60</span><span class="token punctuation">;</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> single_view <span class="token keyword">WHERE</span> <span class="token string">"学生学号"</span> <span class="token operator">=</span> <span class="token string">'1887592443'</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            在执行这个语句的同时，我们注意到学生学号为
+            <code>
+             1887592443
+            </code>
+            同学的信息变化：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/89edf2f59b4b9691684f88d41f9092df.png#pic_center"/>
+           </p>
+           <p>
+            执行上述操作后，输出结果为：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/01fe0f07482af6e554fb0959327f0671.png#pic_center"/>
+           </p>
+           <p>
+            可以知道这条信息已经更新，并且这科小于60分的课程成绩已经成功进行了操作。
+           </p>
+           <p>
+            （
+            <span class="katex--inline">
+             <span class="katex">
+              <span class="katex-mathml">
+               11.4 
+        
+       
+         ≈ 
+        
+        
+        
+          1.3 
+         
+        
+       
+         × 
+        
+       
+         10 
+        
+       
+      
+        11.4 \approx \sqrt{1.3} \times 10
+              </span>
+              <span class="katex-html">
+               <span class="base">
+                <span class="strut" style="height: 0.64444em; vertical-align: 0em;">
+                </span>
+                <span class="mord">
+                 1
+                </span>
+                <span class="mord">
+                 1
+                </span>
+                <span class="mord">
+                 .
+                </span>
+                <span class="mord">
+                 4
+                </span>
+                <span class="mspace" style="margin-right: 0.277778em;">
+                </span>
+                <span class="mrel">
+                 ≈
+                </span>
+                <span class="mspace" style="margin-right: 0.277778em;">
+                </span>
+               </span>
+               <span class="base">
+                <span class="strut" style="height: 1.04em; vertical-align: -0.13278em;">
+                </span>
+                <span class="mord sqrt">
+                 <span class="vlist-t vlist-t2">
+                  <span class="vlist-r">
+                   <span class="vlist" style="height: 0.90722em;">
+                    <span class="svg-align" style="top: -3em;">
+                     <span class="pstrut" style="height: 3em;">
+                     </span>
+                     <span class="mord" style="padding-left: 0.833em;">
+                      <span class="mord">
+                       1
+                      </span>
+                      <span class="mord">
+                       .
+                      </span>
+                      <span class="mord">
+                       3
+                      </span>
+                     </span>
+                    </span>
+                    <span class="" style="top: -2.86722em;">
+                     <span class="pstrut" style="height: 3em;">
+                     </span>
+                     <span class="hide-tail" style="min-width: 0.853em; height: 1.08em;">
+                      <svg height="1.08em" preserveaspectratio="xMinYMin slice" viewbox="0 0 400000 1080" width="400em">
+                      </svg>
+                     </span>
+                    </span>
+                   </span>
+                   <span class="vlist-s">
+                    ​
+                   </span>
+                  </span>
+                  <span class="vlist-r">
+                   <span class="vlist" style="height: 0.13278em;">
+                    <span class="">
+                    </span>
+                   </span>
+                  </span>
+                 </span>
+                </span>
+                <span class="mspace" style="margin-right: 0.222222em;">
+                </span>
+                <span class="mbin">
+                 ×
+                </span>
+                <span class="mspace" style="margin-right: 0.222222em;">
+                </span>
+               </span>
+               <span class="base">
+                <span class="strut" style="height: 0.64444em; vertical-align: 0em;">
+                </span>
+                <span class="mord">
+                 1
+                </span>
+                <span class="mord">
+                 0
+                </span>
+               </span>
+              </span>
+             </span>
+            </span>
+            ）
+           </p>
+           <p>
+            之后我们关注原表信息的变化：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> xk <span class="token keyword">WHERE</span> xh <span class="token operator">=</span> <span class="token string">'1887592443'</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            可知在视图上的更新操作已经成功作用到原表上：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/95b5ffec8029e4013beac5d81df418e0.png#pic_center"/>
+           </p>
+           <p>
+            <strong>
+             由此证明视图不是一个真实的表，而是虚拟的表，而视图中存储的数据实际上都在原表中。
+            </strong>
+           </p>
+           <p>
+            P2. 进行完P1操作后，再查找分数&lt;60分的成绩，并且删除这些数据。
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> single_view <span class="token keyword">WHERE</span> <span class="token string">"学生学号"</span> <span class="token operator">=</span> <span class="token string">'1887592443'</span><span class="token punctuation">;</span>
+<span class="token keyword">DELETE</span> <span class="token keyword">FROM</span> single_view <span class="token keyword">WHERE</span> <span class="token string">"课程成绩"</span> <span class="token operator">&lt;</span> <span class="token number">60</span><span class="token punctuation">;</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> single_view <span class="token keyword">WHERE</span> <span class="token string">"学生学号"</span> <span class="token operator">=</span> <span class="token string">'1887592443'</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            我们还是关注学号
+            <code>
+             1887592443
+            </code>
+            ：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/93724757afdfceb67a2b190ff861e3eb.png#pic_center"/>
+           </p>
+           <p>
+            执行上述操作后，输出结果为：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/0a9b75a927f3505d1caa28826855e392.png#pic_center"/>
+           </p>
+           <p>
+            然后再去查询原表的信息，可以发现其中的行数比原来要少，且已经没有60分的数据：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/244da20c75b843fabb54cee0b4b35811.png#pic_center"/>
+           </p>
+           <p>
+            建立单表视图以及在其上进行更新、删除数据的工作完成。
+           </p>
+           <h5>
+            <a id="4__273">
+            </a>
+            4. 建立多表的视图，练习通过视图来更新、删除数据；
+           </h5>
+           <p>
+            <strong>
+             在openGauss直接执行带有分号嵌套的语句会出现问题（不能定义用分号分隔的多条命令），因此以下的操作均在putty中编写相应的sql语句进行。
+            </strong>
+           </p>
+           <p>
+            使用SELECT和WHERE语句可以同时在多个表中查询信息，从而建立多表视图，比如每位同学的姓名，学号，选择课程的编号和对应成绩。
+           </p>
+           <p>
+            下面是一个多表视图的例子。
+           </p>
+           <p>
+            我们先在控制台中创建名字为
+            <code>
+             Multi_View.sql
+            </code>
+            的文件：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">CALL</span> proc_restore_database_2<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">DROP</span> <span class="token keyword">VIEW</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> multi_view<span class="token punctuation">;</span>
+<span class="token keyword">CREATE</span> <span class="token operator">OR</span> <span class="token keyword">REPLACE</span> <span class="token keyword">VIEW</span> multi_view<span class="token punctuation">(</span><span class="token string">"学生姓名"</span><span class="token punctuation">,</span><span class="token string">"学生学号"</span><span class="token punctuation">,</span><span class="token string">"课程编号"</span><span class="token punctuation">,</span><span class="token string">"课程成绩"</span><span class="token punctuation">)</span>
+<span class="token keyword">AS</span> <span class="token punctuation">(</span>
+  <span class="token keyword">SELECT</span> xs<span class="token punctuation">.</span>xm<span class="token punctuation">,</span>xs<span class="token punctuation">.</span>xh<span class="token punctuation">,</span>kcbh<span class="token punctuation">,</span>cj <span class="token keyword">FROM</span> xs<span class="token punctuation">,</span>xk <span class="token keyword">WHERE</span> xs<span class="token punctuation">.</span>xh <span class="token operator">=</span> xk<span class="token punctuation">.</span>xh
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token operator">OR</span> <span class="token keyword">REPLACE</span> <span class="token keyword">RULE</span> multi_view_UPDATE <span class="token keyword">AS</span> <span class="token keyword">ON</span> <span class="token keyword">UPDATE</span> <span class="token keyword">TO</span> multi_view <span class="token keyword">DO</span> INSTEAD <span class="token punctuation">(</span>
+  <span class="token keyword">UPDATE</span> xs <span class="token keyword">SET</span> xm <span class="token operator">=</span> NEW<span class="token punctuation">.</span><span class="token string">"学生姓名"</span> <span class="token keyword">WHERE</span> xs<span class="token punctuation">.</span>xh <span class="token operator">=</span> OLD<span class="token punctuation">.</span><span class="token string">"学生学号"</span><span class="token punctuation">;</span>
+  <span class="token keyword">UPDATE</span> xk <span class="token keyword">SET</span> cj <span class="token operator">=</span> NEW<span class="token punctuation">.</span><span class="token string">"课程成绩"</span> <span class="token keyword">WHERE</span> <span class="token punctuation">(</span>xk<span class="token punctuation">.</span>xh<span class="token punctuation">,</span>xk<span class="token punctuation">.</span>kcbh<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">(</span>OLD<span class="token punctuation">.</span><span class="token string">"学生学号"</span><span class="token punctuation">,</span>OLD<span class="token punctuation">.</span><span class="token string">"课程编号"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            <strong>
+             注：以上的语句如果直接复制到Data Studio运行，则会出现以下的问题：
+            </strong>
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/c0e379a41021a4296865c6979603769d.png#pic_center"/>
+           </p>
+           <p>
+            <strong>
+             问题产生的根本原因是Data Studio没法区分在语句中的分号以及在末尾的分号，导致Data Studio在选择这些语句时，遇到第一个UPDATE语句的分号就会误认为语句已经输入结束，从而产生syntax error。
+            </strong>
+           </p>
+           <p>
+            <strong>
+             因此在输入这样的带分号嵌套的语句时，尽量使用控制台以及sql文件，而不是依赖于Data Studio客户端的调试功能。
+            </strong>
+           </p>
+           <p>
+            这个问题解决的参考：
+            <a href="https://stackoverflow.com/questions/20216755/rule-with-multiple-commands" rel="nofollow">
+             RULE with multiple commands
+            </a>
+           </p>
+           <p>
+            以下是在控制台中运行的结果：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/0685e4ec3d2fa1ce47391b372be420a7.png#pic_center"/>
+           </p>
+           <p>
+            接下来我们想要进行以下操作：
+           </p>
+           <ul>
+            <li>
+             在这个视图中找到成绩小于60的课程成绩，将这些成绩的值更改为NULL，同时在对应的学生姓名后面加上_F（代表学生挂过科）。
+            </li>
+           </ul>
+           <p>
+            则相应代码如下所示：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">UPDATE</span> multi_view
+<span class="token keyword">SET</span> <span class="token string">"课程成绩"</span> <span class="token operator">=</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span> <span class="token string">"学生姓名"</span> <span class="token operator">=</span> <span class="token string">"学生姓名"</span> <span class="token operator">||</span> <span class="token string">'_F'</span>
+<span class="token keyword">WHERE</span> <span class="token string">"课程成绩"</span> <span class="token operator">&lt;</span> <span class="token number">60</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            因为我们已经定义好了视图和相应规则，这条语句在控制台或者Data Studio运行均可。
+           </p>
+           <p>
+            在Data Studio的实验结果为：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/d2b41781d9aee2c5a5edd849c5398230.png#pic_center"/>
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/d3e665ef4a902e26bc45acb951d294d3.png#pic_center"/>
+           </p>
+           <p>
+            我们可以看到xk表的成绩，以及xs表的姓名都发生了更新。
+           </p>
+           <p>
+            同理，如果我们要进行以下操作：
+           </p>
+           <ul>
+            <li>
+             在这个视图中找到成绩小于60的课程成绩，将这个课程成绩删除。
+            </li>
+           </ul>
+           <p>
+            则相应代码为：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">CREATE</span> <span class="token operator">OR</span> <span class="token keyword">REPLACE</span> <span class="token keyword">RULE</span> multi_view_DELETE <span class="token keyword">AS</span> <span class="token keyword">ON</span> <span class="token keyword">DELETE</span> <span class="token keyword">TO</span> multi_view <span class="token keyword">DO</span> INSTEAD <span class="token punctuation">(</span>
+  <span class="token keyword">DELETE</span> <span class="token keyword">FROM</span> xk <span class="token keyword">WHERE</span> <span class="token punctuation">(</span>xk<span class="token punctuation">.</span>xh<span class="token punctuation">,</span>xk<span class="token punctuation">.</span>kcbh<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">(</span>OLD<span class="token punctuation">.</span><span class="token string">"学生学号"</span><span class="token punctuation">,</span>OLD<span class="token punctuation">.</span><span class="token string">"课程编号"</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">DELETE</span> <span class="token keyword">FROM</span> multi_view <span class="token keyword">WHERE</span> <span class="token string">"课程成绩"</span> <span class="token operator">&lt;</span> <span class="token number">60</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            实验结果如下：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/35d7e5ba762dca5f0e5819c8bc163652.png#pic_center"/>
+           </p>
+           <p>
+            建立多表视图以及在其上进行更新、删除数据的工作完成。
+           </p>
+           <h4>
+            <a id="_348">
+            </a>
+            三：建立存储过程
+           </h4>
+           <h5>
+            <a id="1__350">
+            </a>
+            1. 在“学籍与成绩管理系统”表格中输入不符合系统要求的数据（如学生学籍表中学号重复），建立适当的存储过程，分别查找和删除这些不合法的数据；
+           </h5>
+           <p>
+            对于查找和删除操作，我们可以定义以下的存储过程：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">DROP</span> <span class="token keyword">PROCEDURE</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> delete_duplicates<span class="token punctuation">;</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">PROCEDURE</span> delete_duplicates<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">AS</span>
+<span class="token keyword">BEGIN</span>
+  <span class="token keyword">DELETE</span> <span class="token keyword">FROM</span> xs <span class="token keyword">WHERE</span> xh <span class="token operator">IN</span><span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> xh <span class="token keyword">FROM</span> <span class="token punctuation">(</span>
+      <span class="token keyword">SELECT</span> <span class="token function">MAX</span><span class="token punctuation">(</span>xh<span class="token punctuation">)</span> <span class="token keyword">as</span> xh<span class="token punctuation">,</span><span class="token function">COUNT</span><span class="token punctuation">(</span>xh<span class="token punctuation">)</span> <span class="token keyword">AS</span> cnt
+      <span class="token keyword">FROM</span> xs
+      <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> xh
+    <span class="token punctuation">)</span> <span class="token keyword">WHERE</span> cnt <span class="token operator">&gt;</span> <span class="token number">1</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            为了验证这个存储过程的正确性，我们先在学生中插入一条和原先的Nardack相同学号的数据：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> xs <span class="token punctuation">(</span>xm<span class="token punctuation">,</span>xb<span class="token punctuation">,</span>xh<span class="token punctuation">,</span>ydh<span class="token punctuation">,</span>bj<span class="token punctuation">,</span>chrq<span class="token punctuation">)</span> <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token string">'Nardack_2'</span><span class="token punctuation">,</span><span class="token string">'女'</span><span class="token punctuation">,</span><span class="token string">'341433'</span><span class="token punctuation">,</span><span class="token string">'zy'</span><span class="token punctuation">,</span><span class="token string">'08012001'</span><span class="token punctuation">,</span><span class="token string">'11/19/1987'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            之后我们查看xs表的数据：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/5f52f551909d9201838e3a2348400164.png#pic_center"/>
+           </p>
+           <p>
+            之后我们调用这个存储过程：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">CALL</span> delete_duplicates<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/4feebdb0cf653adcbafb386bda75e477.png#pic_center"/>
+           </p>
+           <p>
+            之后我们再去观察xs表中的数据，可以发现含有重复学号（341433）的两条数据都已经被全部删除：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/326b5d259c00d001c7ad79d852fd9aee.png#pic_center"/>
+           </p>
+           <p>
+            <strong>
+             注意：这样处理只能保证当出现含有重复学号数据时，含有这个学号的所有列都被删除。如果要实现“只保留一个”的需求，最好的方法还是建立主键。
+            </strong>
+           </p>
+           <p>
+            <strong>
+             附：在Putty控制台中输入存储过程的方法：
+            </strong>
+           </p>
+           <p>
+            <strong>
+             将上面的语句复制完以后，在最后面加上一个正斜杠（/），代表整个语句输入结束。
+            </strong>
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/52e716e9a2f885f746e1a2bbf9defffe.png#pic_center"/>
+           </p>
+           <h5>
+            <a id="2__394">
+            </a>
+            2. 建立适当的存储过程，计算学生的总学分、总成绩，并保存在另外一张表中；
+           </h5>
+           <p>
+            这个存储过程的源码如下：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">PROCEDURE</span> calculate_score<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">AS</span>
+<span class="token keyword">BEGIN</span>
+  <span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> xs_score<span class="token punctuation">;</span>
+  <span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> xs_score<span class="token punctuation">(</span>
+  	xm <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">24</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  	xh <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+  	zxf <span class="token keyword">DECIMAL</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  	zcj <span class="token keyword">DECIMAL</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> xs_score <span class="token keyword">SELECT</span> xm<span class="token punctuation">,</span>xh<span class="token punctuation">,</span><span class="token function">SUM</span><span class="token punctuation">(</span>xf<span class="token punctuation">)</span> <span class="token keyword">AS</span> zxf<span class="token punctuation">,</span><span class="token function">SUM</span><span class="token punctuation">(</span>xf<span class="token operator">*</span>cj<span class="token punctuation">)</span> <span class="token keyword">AS</span> zcj <span class="token keyword">FROM</span> <span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> xm<span class="token punctuation">,</span>xh<span class="token punctuation">,</span>kcbh<span class="token punctuation">,</span>NVL<span class="token punctuation">(</span>xf<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> xf<span class="token punctuation">,</span>NVL<span class="token punctuation">(</span><span class="token function">MAX</span><span class="token punctuation">(</span>cj<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> cj <span class="token keyword">FROM</span> <span class="token punctuation">(</span>
+      <span class="token keyword">SELECT</span> xs<span class="token punctuation">.</span>xm<span class="token punctuation">,</span>xs<span class="token punctuation">.</span>xh<span class="token punctuation">,</span>xk<span class="token punctuation">.</span>kcbh<span class="token punctuation">,</span>kc<span class="token punctuation">.</span>xf<span class="token punctuation">,</span>xk<span class="token punctuation">.</span>cj <span class="token keyword">FROM</span> <span class="token punctuation">(</span>
+        xs <span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> xk <span class="token keyword">ON</span> <span class="token punctuation">(</span>xs<span class="token punctuation">.</span>xh <span class="token operator">=</span> xk<span class="token punctuation">.</span>xh<span class="token punctuation">)</span> <span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> kc <span class="token keyword">ON</span> <span class="token punctuation">(</span>xk<span class="token punctuation">.</span>kcbh <span class="token operator">=</span> kc<span class="token punctuation">.</span>kcbh<span class="token punctuation">)</span>
+      <span class="token punctuation">)</span>
+    <span class="token punctuation">)</span> <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> <span class="token punctuation">(</span>xm<span class="token punctuation">,</span>xh<span class="token punctuation">,</span>kcbh<span class="token punctuation">,</span>xf<span class="token punctuation">)</span>
+  <span class="token punctuation">)</span> <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> <span class="token punctuation">(</span>xm<span class="token punctuation">,</span>xh<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            这个存储过程先是创建了一个名为xs_score的表，然后计算出总学分，总姓名，把姓名，学号，总学分，总成绩存储到这个表中。
+           </p>
+           <p>
+            运行完这个存储过程后，查询xs_score的结果为：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/87449bfa9fa604bcafb3ce9401415dd8.png#pic_center"/>
+           </p>
+           <h5>
+            <a id="3__423">
+            </a>
+            3. 查询总成绩表，并进行排序。
+           </h5>
+           <p>
+            我们已经从存储过程2中得到了xs_score这个表，之后我们如果要对总成绩排序，只需要执行以下语句就可以了：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> xs_score <span class="token keyword">ORDER</span> <span class="token keyword">BY</span> zcj <span class="token keyword">DESC</span><span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            运行结果如下：
+            <br/>
+            <img alt="在这里插入图片描述" src="https://i-blog.csdnimg.cn/blog_migrate/af2c23e13def2dc012decc42874cd712.png#pic_center"/>
+           </p>
+           <p>
+            不需要这个表的话，直接把这个表删除即可：
+           </p>
+           <pre><code class="prism language-sql"><span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> xs_score<span class="token punctuation">;</span>
+</code></pre>
+           <p>
+            从以上的实验过程中，我们可以看到定义视图和存储过程可以简化代码，并使得代码更加清晰。
+           </p>
+          </div>
+          <link href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/markdown_views-a5d25dd831.css" rel="stylesheet"/>
+          <link href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/style-e504d6a974.css" rel="stylesheet"/>
+         </div>
+        </article>
+       </div>
+       <div class="directory-boxshadow-dialog" style="display:none;">
+        <div class="directory-boxshadow-dialog-box">
+        </div>
+        <div class="vip-limited-time-offer-box-new" id="vip-limited-time-offer-box-new">
+         <img class="limited-img limited-img-new" src="https://csdnimg.cn/release/blogv2/dist/pc/img/vip-limited-close-newWhite.png"/>
+         <div class="vip-limited-time-top">
+          确定要放弃本次机会？
+         </div>
+         <span class="vip-limited-time-text">
+          福利倒计时
+         </span>
+         <div class="limited-time-box-new">
+          <span class="time-hour">
+          </span>
+          <i>
+           :
+          </i>
+          <span class="time-minite">
+          </span>
+          <i>
+           :
+          </i>
+          <span class="time-second">
+          </span>
+         </div>
+         <div class="limited-time-vip-box">
+          <p>
+           <img class="coupon-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/vip-limited-close-roup.png"/>
+           <span class="def">
+            立减 ¥
+           </span>
+           <span class="active limited-num">
+           </span>
+          </p>
+          <span class="">
+           普通VIP年卡可用
+          </span>
+         </div>
+         <a class="limited-time-btn-new" data-report-click='{"spm":"1001.2101.3001.9621"}' data-report-query="spm=1001.2101.3001.9621" href="https://mall.csdn.net/vip">
+          立即使用
+         </a>
+        </div>
+       </div>
+       <a id="commentBox" name="commentBox">
+       </a>
+      </main>
+     </div>
+     <div class="recommend-right1 align-items-stretch clearfix" data-type="recommend" id="rightAsideConcision">
+      <aside class="recommend-right_aside">
+       <div id="recommend-right-concision">
+        <div class="flex-column aside-box groupfile" id="groupfileConcision">
+         <div class="groupfile-div1">
+          <h3 class="aside-title">
+           目录
+          </h3>
+          <div class="align-items-stretch group_item">
+           <div class="pos-box">
+            <div class="scroll-box">
+             <div class="toc-box">
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </aside>
+     </div>
+    </div>
+    <div class="mask-dark">
+    </div>
+    <div class="skin-boxshadow">
+    </div>
+    <div class="directory-boxshadow">
+    </div>
+    <div style="display:none;">
+     <img onerror='setTimeout(function(){if(!/(csdn.net|iteye.com|baiducontent.com|googleusercontent.com|360webcache.com|sogoucdn.com|bingj.com|baidu.com)$/.test(window.location.hostname)){window="\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x77\x77\x2e\x63\x73\x64\x6e\x2e\x6e\x65\x74"}},3000);' src=""/>
+    </div>
+    <div class="keyword-dec-box" id="keywordDecBox">
+    </div>
+   </link>
+  </link>
+ </body>
+ <link href="https://g.csdnimg.cn/lib/cboxEditor/1.1.6/embed-editor.min.css" rel="stylesheet"/>
+ <link href="https://csdnimg.cn/release/blog_editor_html/release1.6.12/ckeditor/plugins/codesnippet/lib/highlight/styles/atom-one-light.css" rel="stylesheet"/>
+</html>

@@ -1,0 +1,2148 @@
+    <!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="canonical" href="https://blog.csdn.net/weixin_50836014/article/details/125684207"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="report" content='{"pid": "blog", "spm":"1001.2101"}'>
+    <meta name="referrer" content="always">
+    <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+    <meta name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848">
+    <meta name="applicable-device" content="pc">
+    <link  href="https://g.csdnimg.cn/static/logo/favicon32.ico"  rel="shortcut icon" type="image/x-icon" />
+    <title>单车管理系统——1.文档设计及sql代码说明_bicycle数据库-CSDN博客</title>
+    <script>
+      (function(){ 
+        var el = document.createElement("script"); 
+        el.src = "https://s3a.pstatp.com/toutiao/push.js?1abfa13dfe74d72d41d83c86d240de427e7cac50c51ead53b2e79d40c7952a23ed7716d05b4a0f683a653eab3e214672511de2457e74e99286eb2c33f4428830"; 
+        el.id = "ttzz"; 
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(el, s);
+      })(window)
+    </script>
+        <meta name="keywords" content="bicycle数据库">
+        <meta name="csdn-baidu-search"  content='{"autorun":true,"install":true,"keyword":"bicycle数据库"}'>
+    <meta name="description" content="文章浏览阅读563次，点赞2次，收藏12次。单车管理系统——1.文档设计及sql代码说明_bicycle数据库">
+        <link rel="stylesheet" type="text/css" href="https://csdnimg.cn/release/blogv2/dist/pc/css/detail_enter-af0ead44cd.min.css">
+    <style>
+        #content_views pre{
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none; 
+            user-select: none; 
+        }
+        #content_views pre code{
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none; 
+            user-select: none; 
+        }
+    </style>
+    <script type="application/ld+json">{"@context":"https://ziyuan.baidu.com/contexts/cambrian.jsonld","@id":"https://blog.csdn.net/weixin_50836014/article/details/125684207","appid":"1638831770136827","pubDate":"2022-07-08T18:45:45","title":"单车管理系统&mdash;&mdash;1.文档设计及sql代码说明_bicycle数据库-CSDN博客","upDate":"2022-07-08T18:58:54"}</script>
+        <link rel="stylesheet" type="text/css" href="https://csdnimg.cn/release/blogv2/dist/pc/themesSkin/skin-whitemove/skin-whitemove-2af9149bdc.min.css">
+    <script src="https://g.csdnimg.cn/lib/jquery/1.12.4/jquery.min.js" type="text/javascript"></script>
+    <script src="https://g.csdnimg.cn/lib/jquery-migrate/1.4.1/jquery-migrate.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var isCorporate = false;
+        var username =  "weixin_50836014";
+        var skinImg = "white";
+
+        var blog_address = "https://blog.csdn.net/weixin_50836014";
+        var currentUserName = "";
+        var isOwner = false;
+        var loginUrl = "http://passport.csdn.net/account/login?from=https://blog.csdn.net/weixin_50836014/article/details/125684207";
+        var blogUrl = "https://blog.csdn.net/";
+        var avatar = "https://profile-avatar.csdnimg.cn/569f166329924ccb8e4476e87aec0e57_weixin_50836014.jpg!1";
+        var articleTitle = "单车管理系统——1.文档设计及sql代码说明";
+        var articleDesc = "文章浏览阅读563次，点赞2次，收藏12次。单车管理系统——1.文档设计及sql代码说明_bicycle数据库";
+        var articleTitles = "单车管理系统——1.文档设计及sql代码说明_bicycle数据库-CSDN博客";
+        var nickName = "一只野指针.";
+        var articleDetailUrl = "https://blog.csdn.net/weixin_50836014/article/details/125684207";
+        var vipUrlV = "https://mall.csdn.net/vip?vipSource=learningVip";
+        if(window.location.host.split('.').length == 3) {
+            blog_address = blogUrl + username;
+        }
+        var skinStatus = "White";
+        var blogStaticHost = "https://csdnimg.cn/release/blogv2/"
+          var payColumn = false
+    </script>
+        <meta name="toolbar" content='{"type":"0","fixModel":"1"}'>
+    <script src="https://g.csdnimg.cn/??fixed-sidebar/1.1.7/fixed-sidebar.js" type="text/javascript"></script>
+      <script src="https://cdn-static-devbit.csdn.net/ai100/chat/chat-search.js?v=2" type="text/javascript"></script>
+    <script src='//g.csdnimg.cn/common/csdn-report/report.js' type='text/javascript'></script>
+    <link rel="stylesheet" type="text/css" href="https://csdnimg.cn/public/sandalstrap/1.4/css/sandalstrap.min.css">
+    <style>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </style>
+    <script src="https://dup.baidustatic.com/js/ds.js"></script>
+      <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "lgtpix6r85");
+      </script>
+    <script src="/cdn_cgi_bs_captcha/static/js/waf_captcha_embedded_bs.js"></script>
+</head>
+  <body class="nodata  " style="">
+    <div id="toolbarBox" style="min-height: 48px;"></div>
+        <script>
+            var toolbarSearchExt = '{"id":125684207,"landingWord":["bicycle数据库"],"queryWord":"","tag":["sql","数据库","sqlserver"],"title":"单车管理系统&mdash;&mdash;1.文档设计及sql代码说明"}';
+        </script>
+    <script src="https://g.csdnimg.cn/common/csdn-toolbar/csdn-toolbar.js" type="text/javascript"></script>
+    <script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+    </script>
+
+    <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/pc/css/blog_code-01256533b5.min.css">
+    <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/chart-3456820cac.css" />
+    <link rel="stylesheet" href="https://g.csdnimg.cn/lib/swiper/6.0.4/css/swiper.css" />
+    <script src="https://g.csdnimg.cn/lib/swiper/6.0.4/js/swiper.js" async></script>
+    <script>
+      var articleId = 125684207;
+        var privateEduData = ["计算机专业","csdn"];//高亮数组
+        var privateData = ["server","phi","delphi","ai","log.c"];//高亮数组
+      var commentscount = 0;
+      var commentAuth = 2;
+      var curentUrl = "https://blog.csdn.net/weixin_50836014/article/details/125684207";
+      var myUrl = "https://my.csdn.net/";
+      var isGitCodeBlog = false;
+      var isOpenSourceBlog = false;
+      var isVipArticle = false;
+        var highlight = ["sqlserver","bicycle","管理系统","数据库","sql","文档","设计","代码","说明","单车","1","."];//高亮数组
+        var isRecommendModule = true;
+          var isBaiduPre = true;
+          var baiduCount = 2;
+          var setBaiduJsCount = 10;
+        var viewCountFormat = 563;
+      var share_card_url = "https://app-blog.csdn.net/share?article_id=125684207&username=weixin_50836014"
+      var mallVipUrl = "https://mall.csdn.net/vip?vipSource=article"
+      var vipArticleAbStyle = "t_1"
+
+      var vipArticleCpStyle = "t_1"
+      var articleType = 1;
+      var baiduKey = "bicycle数据库";
+      var copyPopSwitch = true;
+      var needInsertBaidu = true;
+      var recommendRegularDomainArr = ["blog.csdn.net/.+/article/details/","download.csdn.net/download/","edu.csdn.net/course/detail/","ask.csdn.net/questions/","bbs.csdn.net/topics/","www.csdn.net/gather_.+/"]
+      var codeStyle = "atom-one-dark";
+      var baiduSearchType = "baidulandingword";
+      var sharData = "{\"hot\":[{\"id\":1,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/a5f4260710904e538002a6ab337939b3.png\"},{\"id\":2,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/188b37199a2c4b74b1d9ffc39e0d52de.png\"},{\"id\":3,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/14ded358b631444581edd98a256bc5af.png\"},{\"id\":4,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/1470f23a770444d986ad551b9c33c5be.png\"},{\"id\":5,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/c329f5181dc74f6c9bd28c982bb9f91d.png\"},{\"id\":6,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/ccd8a3305e81460f9c505c95b432a65f.png\"},{\"id\":7,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/bc89d8283389440d97fc4d30e30f45e1.png\"},{\"id\":8,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/452d485b4a654f5592390550d2445edf.png\"},{\"id\":9,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/f8b9939db2ed474a8f43a643015fc8b7.png\"},{\"id\":10,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/6de8864187ab4ed3b1db0856369c36ff.png\"},{\"id\":11,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/673cc3470ff74072acba958dc0c46e2d.png\"},{\"id\":12,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/930c119760ac4491804db80f9c6d4e3f.png\"},{\"id\":13,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/15e6befb05a24233bc2b65e96aa8d972.png\"},{\"id\":14,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/2075fd6822184b95a41e214de4daec13.png\"},{\"id\":15,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/859b1552db244eb6891a809263a5c657.png\"},{\"id\":16,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/0be2f920f1f74290a98921974a9613fd.png\"},{\"id\":17,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/2e97e00b43f14afab494ea55ef3f4a6e.png\"},{\"id\":18,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/ff4ab252f46e444686f5135d6ebbfec0.png\"},{\"id\":19,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/ae029bbe99564e79911657912d36524f.png\"},{\"id\":20,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/b3ece39963de440388728e9e7b9bf427.png\"},{\"id\":21,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/6f14651a99ba486e926d63b6fa692997.png\"},{\"id\":22,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/83ceddf050084875a341e32dcceca721.png\"},{\"id\":23,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/b90368b8fd5d4c6c8c79a707d877cf7c.png\"},{\"id\":24,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/aeffae14ecf14e079b2616528c9a393b.png\"},{\"id\":25,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/c5a06b5a13d44d16bed868fc3384897a.png\"},{\"id\":26,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/08b697658b844b318cea3b119e9541ef.png\"},{\"id\":27,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/68ccb0b8d09346ac961d2b5c1a8c77bf.png\"},{\"id\":28,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/a2227a247e37418cbe0ea972ba6a859b.png\"},{\"id\":29,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/3a42825fede748f9993e5bb844ad350d.png\"},{\"id\":30,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/8882abc1dd484224b636966ea38555c3.png\"},{\"id\":31,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/4f6a5f636a3e444d83cf8cc06d87a159.png\"},{\"id\":32,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/1953ef79c56b4407b78d7181bdff11c3.png\"},{\"id\":33,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/c04a2a4f772948ed85b5b0380ed36287.png\"},{\"id\":34,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/5b4fecd05091405ea04d8c0f53e9f2c7.png\"},{\"id\":35,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/b89f576d700344e280d6ceb2a66c2420.png\"},{\"id\":36,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/1c65780e11804bbd9971ebadb3d78bcf.png\"},{\"id\":37,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/d590db2055f345db9706eb68a7ec151a.png\"},{\"id\":38,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/fe602f80700b4f6fb3c4a9e4c135510e.png\"},{\"id\":39,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/39ff2fcd31e04feba301a071976a0ba7.png\"},{\"id\":40,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/f9b61b3d113f436b828631837f89fb39.png\"},{\"id\":41,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/df1aca5f610c4ad48cd16da88c9c8499.png\"},{\"id\":42,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/d7acf73a1e6b41399a77a85040e10961.png\"},{\"id\":43,\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/b7f1b63542524b97962ff649ab4e7e23.png\"}],\"vip\":[{\"id\":1,\"vipUrl\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220920101150.png\",\"url\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220920101154.png\"},{\"id\":2,\"vipUrl\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220920101204.png\",\"url\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220920101208.png\"},{\"id\":3,\"vipUrl\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220920101211.png\",\"url\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220920101215.png\"},{\"id\":4,\"vipUrl\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220920101218.png\",\"url\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220920101220.png\"},{\"id\":5,\"vipUrl\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220920101223.png\",\"url\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220920101226.png\"},{\"id\":6,\"vipUrl\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220922100635.png\",\"url\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220922100639.png\"},{\"id\":7,\"vipUrl\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220922100642.png\",\"url\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220922100644.png\"},{\"id\":8,\"vipUrl\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220922100647.png\",\"url\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220922100649.png\"},{\"id\":9,\"vipUrl\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220922100652.png\",\"url\":\"https:\\/\\/img-home.csdnimg.cn\\/images\\/20220922100655.png\"},{\"id\":10,\"vipUrl\":\"https:\\/\\/img-blog.csdnimg.cn\\/55de67481fde4b04b97ad78f11fe369a.png\",\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/bb2418fb537e4d78b10d8765ccd810c5.png\"},{\"id\":11,\"vipUrl\":\"https:\\/\\/img-blog.csdnimg.cn\\/579c713394584d128104ef1044023954.png\",\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/f420d9fbcf5548079d31b5e809b6d6cd.png\"},{\"id\":12,\"vipUrl\":\"https:\\/\\/img-blog.csdnimg.cn\\/75b7f3155ba642f5a4cc16b7baf44122.png\",\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/a9030f5877be401f8b340b80b0d91e64.png\"},{\"id\":13,\"vipUrl\":\"https:\\/\\/img-blog.csdnimg.cn\\/0903d33cafa54934be3780aa54ae958d.png\",\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/2cd8c8929f5a42fca5da2a0aeb456203.png\"},{\"id\":14,\"vipUrl\":\"https:\\/\\/img-blog.csdnimg.cn\\/949fd7c22884439fbfc3c0e9c3b8dee7.png\",\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/dafbea9bd9eb4f3b962b48dc41657f89.png\"},{\"id\":15,\"vipUrl\":\"https:\\/\\/img-blog.csdnimg.cn\\/4119cfddd71d4e6a8a27a18dbb74d90e.png\",\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/c56310c8b6384d9e85388e4e342ce508.png\"},{\"id\":16,\"vipUrl\":\"https:\\/\\/img-blog.csdnimg.cn\\/121575274da142bcbbbbc2e8243dd411.png\",\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/5013993de06542f881018bb9abe2edf7.png\"},{\"id\":17,\"vipUrl\":\"https:\\/\\/img-blog.csdnimg.cn\\/4d97aa6dd4fe4f09a6bef5bdf8a6abcd.png\",\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/76f23877b6ad4066ad45ce8e31b4b977.png\"},{\"id\":18,\"vipUrl\":\"https:\\/\\/img-blog.csdnimg.cn\\/fdb619daf21b4c829de63b9ebc78859d.png\",\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/a1abe5d27a5441f599adfe662f510243.png\"},{\"id\":19,\"vipUrl\":\"https:\\/\\/img-blog.csdnimg.cn\\/676b7707bb11410f8f56bc0ed2b2345c.png\",\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/7ac5b467fbf24e1d8c2de3f3332c4f54.png\"},{\"id\":20,\"vipUrl\":\"https:\\/\\/img-blog.csdnimg.cn\\/0becb8cc227e4723b765bdd69a20fd4a.png\",\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/fdec85b26091486b9a89d0b8d45c3749.png\"},{\"id\":21,\"vipUrl\":\"https:\\/\\/img-blog.csdnimg.cn\\/1a6c06235ad44941b38c54cbc25a370c.png\",\"url\":\"https:\\/\\/img-blog.csdnimg.cn\\/410a06cda2d44b0c84578f88275caf70.png\"}],\"map\":{\"hot\":\"热门\",\"vip\":\"VIP\"}}";
+      
+      var canRead = true;
+      var blogMoveHomeArticle = false;
+      var showSearchText = "";
+      var sideToolbarResult = "exp";
+      var sideToolbarDeepseek = "exp1";
+      var articleSource = 1;
+      var articleReport = '{"pid": "blog", "spm":"1001.2101"}';
+        var baiduSearchChannel = 'pc_relevant'
+        var baiduSearchIdentification = '.235^v43^pc_blog_bottom_relevance_base5'
+        var distRequestId = '1744078738195_27454'
+        var initRewardObject = {
+          giver: currentUserName,
+          anchor: username,
+          articleId: articleId,
+          sign: ''
+        }
+        var isLikeStatus = false;
+        var isUnLikeStatus = false;
+        var studyLearnWord = "";
+        var unUseCount = 0;
+        var codeMaxSize = 0;
+        var overCost = true;
+        var isCurrentUserVip = false;
+        var contentViewsHeight = 0;
+        var contentViewsCount = 0;
+        var contentViewsCountLimit = 5;
+        var isShowConcision = false;
+        var lastTime = "2022-10-15 22:17:05"
+        var postTime = "2022-07-08 18:58:54"
+      var isCookieConcision = false
+      var isHasDirectoryModel = false
+      var isShowSideModel = false
+      var isShowDirectoryModel = true
+      function getCookieConcision(sName){
+        var allCookie = document.cookie.split("; ");
+        for (var i=0; i < allCookie.length; i++){
+          var aCrumb = allCookie[i].split("=");
+          if (sName == aCrumb[0])
+            return aCrumb[1];
+        }
+        return null;
+      }
+      if (getCookieConcision('blog_details_concision') && getCookieConcision('blog_details_concision') == 0){
+        isCookieConcision = true
+        isShowSideModel = true
+        isShowDirectoryModel = false
+      }
+    </script>
+        <div class="main_father clearfix d-flex justify-content-center " style="height:100%;">
+          <div class="container clearfix " id="mainBox">
+          <script>
+          if (!isCookieConcision) {
+            $('.main_father').removeClass('mainfather-concision')
+            $('.main_father .container').removeClass('container-concision')
+          } else {
+            $('#mainBox').css('margin-right', '0')
+          }
+          </script>
+          <main>
+<script type="text/javascript">
+    var resourceId =  "";
+    function getQueryString(name) {   
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象  
+      var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+      if( r != null ) return decodeURIComponent( r[2] ); return '';   
+    }
+    function stripscript(s){ 
+      var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%]") 
+      var rs = ""; 
+      for (var i = 0; i < s.length; i++) { 
+        rs = rs+s.substr(i, 1).replace(pattern, ''); 
+      } 
+      return rs;
+    }
+    var blogHotWords = stripscript(getQueryString('utm_term')).length > 1 ? stripscript(getQueryString('utm_term')) : ''
+</script>
+<div class="blog-content-box">
+    <div class="article-header-box">
+        <div class="article-header">
+            <div class="article-title-box">
+                <h1 class="title-article" id="articleContentId">单车管理系统——1.文档设计及sql代码说明</h1>
+            </div>
+            <div class="article-info-box">
+                <div class="article-bar-top">
+                    <img class="article-type-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/original.png" alt="">
+                    <div class="bar-content">
+                      <a class="follow-nickName " href="https://blog.csdn.net/weixin_50836014" target="_blank" rel="noopener" title="一只野指针.">一只野指针.</a>
+                    <img class="article-time-img article-heard-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newUpTime2.png" alt="">
+                    <span class="time">已于&nbsp;2022-10-15 22:17:05&nbsp;修改</span>
+                   <div class="read-count-box">
+                      <img class="article-read-img article-heard-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/articleReadEyes2.png" alt="">
+                      <span class="read-count">阅读量563</span>
+                      <a id="blog_detail_zk_collection" class="un-collection" data-report-click='{"mod":"popu_823","spm":"1001.2101.3001.4232","ab":"new"}'>
+                          <img class="article-collect-img article-heard-img un-collect-status isdefault" style="display:inline-block" src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollect2.png" alt="">
+                          <img class="article-collect-img article-heard-img collect-status isactive" style="display:none" src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollectionActive2.png" alt="">
+                          <span class="name">收藏</span>
+                          <span class="get-collection">
+                              12
+                          </span>
+                      </a>
+                      <div class="read-count-box is-like">
+                        <img class="article-read-img article-heard-img" style="display:none" id="is-like-imgactive-new" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newHeart2023Active.png" alt="">
+                        <img class="article-read-img article-heard-img" style="display:block" id="is-like-img-new" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newHeart2023Black.png" alt="">
+                        <span class="read-count" id="blog-digg-num">点赞数
+                            2
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="blog-tags-box">
+                    <div class="tags-box artic-tag-box">
+                            <span class="label">分类专栏：</span>
+                                <a class="tag-link" href="https://blog.csdn.net/weixin_50836014/category_11906782.html" target="_blank" rel="noopener"># Delphi</a>
+                                <a class="tag-link" href="https://blog.csdn.net/weixin_50836014/category_12042345.html" target="_blank" rel="noopener"># 数据库</a>
+                            <span class="label">文章标签：</span>
+                                <a rel="nofollow" data-report-query="spm=1001.2101.3001.4223" data-report-click='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"sql","ab":"new","extra":"{\"searchword\":\"sql\"}"}' data-report-view='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"sql","ab":"new","extra":"{\"searchword\":\"sql\"}"}' class="tag-link" href="https://so.csdn.net/so/search/s.do?q=sql&amp;t=all&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=&amp;from_tracking_code=tag_word&amp;from_code=app_blog_art" target="_blank" rel="noopener">sql</a>
+                                <a rel="nofollow" data-report-query="spm=1001.2101.3001.4223" data-report-click='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"数据库","ab":"new","extra":"{\"searchword\":\"数据库\"}"}' data-report-view='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"数据库","ab":"new","extra":"{\"searchword\":\"数据库\"}"}' class="tag-link" href="https://so.csdn.net/so/search/s.do?q=%E6%95%B0%E6%8D%AE%E5%BA%93&amp;t=all&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=&amp;from_tracking_code=tag_word&amp;from_code=app_blog_art" target="_blank" rel="noopener">数据库</a>
+                                <a rel="nofollow" data-report-query="spm=1001.2101.3001.4223" data-report-click='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"sqlserver","ab":"new","extra":"{\"searchword\":\"sqlserver\"}"}' data-report-view='{"mod":"popu_626","spm":"1001.2101.3001.4223","strategy":"sqlserver","ab":"new","extra":"{\"searchword\":\"sqlserver\"}"}' class="tag-link" href="https://so.csdn.net/so/search/s.do?q=sqlserver&amp;t=all&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=&amp;from_tracking_code=tag_word&amp;from_code=app_blog_art" target="_blank" rel="noopener">sqlserver</a>
+                    </div>
+                </div>
+                <div class="up-time"><span>于&nbsp;2022-07-08 18:58:54&nbsp;首次发布</span></div>
+                <div class="slide-content-box">
+                    <div class="article-copyright">
+                        <div class="creativecommons">
+                            版权声明：本文为博主原创文章，遵循<a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener"> CC 4.0 BY-SA </a>版权协议，转载请附上原文出处链接和本声明。
+                        </div>
+                        <div class="article-source-link">
+                            本文链接：<a href="https://blog.csdn.net/weixin_50836014/article/details/125684207" target="_blank">https://blog.csdn.net/weixin_50836014/article/details/125684207</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="operating">
+                    <a class="href-article-edit slide-toggle">版权</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="blogHuaweiyunAdvert"></div>
+        <div id="blogColumnPayAdvert">
+            <div class="column-group">
+                <div class="column-group-item column-group0 ">
+                    <div class="item-l">
+                        <a class="item-target" href="https://blog.csdn.net/weixin_50836014/category_12042345.html" target="_blank" title="数据库"
+                        data-report-view='{"spm":"1001.2101.3001.6332"}'
+                        data-report-click='{"spm":"1001.2101.3001.6332"}'>
+                            <img class="item-target" src="https://i-blog.csdnimg.cn/blog_column_migrate/b9346faac8287efffed28c8b2d898da7.png?x-oss-process=image/resize,m_fixed,h_224,w_224" alt="">
+                            <span class="title item-target">
+                                <span>
+                                <span class="tit">数据库</span>
+                                    <span class="dec more">同时被 2 个专栏收录<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/newArrowDown1White.png" alt=""></span>
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="item-m">
+                        <span>7 篇文章</span>
+                    </div>
+                    <div class="item-r">
+                            <a class="item-target article-column-bt articleColumnFreeBt" data-id="12042345">订阅专栏</a>
+                    </div>
+                </div>
+                <div class="column-group-item column-group1 ">
+                    <div class="item-l">
+                        <a class="item-target" href="https://blog.csdn.net/weixin_50836014/category_11906782.html" target="_blank" title="Delphi"
+                        data-report-view='{"spm":"1001.2101.3001.6332"}'
+                        data-report-click='{"spm":"1001.2101.3001.6332"}'>
+                            <img class="item-target" src="https://i-blog.csdnimg.cn/blog_column_migrate/7d8727d03f299ec52a833bd09cfd7652.png?x-oss-process=image/resize,m_fixed,h_224,w_224" alt="">
+                            <span class="title item-target">
+                                <span>
+                                <span class="tit">Delphi</span>
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="item-m">
+                        <span>4 篇文章</span>
+                    </div>
+                    <div class="item-r">
+                            <a class="item-target article-column-bt articleColumnFreeBt" data-id="11906782">订阅专栏</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <article class="baidu_pl">
+        <div id="article_content" class="article_content clearfix">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/kdoc_html_views-1a98987dfd.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/ck_htmledit_views-704d5b9767.css">
+             
+                <div id="content_views" class="markdown_views prism-atom-one-dark">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                        <path stroke-linecap="round" d="M5,0 0,2.5 5,5z" id="raphael-marker-block" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path>
+                    </svg>
+                    <p>SQL server 设计<br /> <strong>目录&#xff1a;</strong><br /> 1.各个表的建立<br /> 2.级联操作<br /> 3.触发器和存储过程<br /> 4权限管理</p> 
+<p>注&#xff1a;由于表比较多&#xff0c;sql语句很长&#xff0c;所以下面的说明中每样只举一个或两个例子&#xff0c;</p> 
+<h2><a id="1_10"></a>1.各个表的建立</h2> 
+<p>表1&#xff1a;用户<br /> <img src="https://i-blog.csdnimg.cn/blog_migrate/dd51e5b7b61a212b63c47415df0649c5.png" alt="在这里插入图片描述" /></p> 
+<p>表2&#xff1a;维修员<br /> <img src="https://i-blog.csdnimg.cn/blog_migrate/b69f19d0b258dad53f4b163de3ebbfdf.png" alt="在这里插入图片描述" /></p> 
+<p>表3&#xff1a;管理员</p> 
+<p><img src="https://i-blog.csdnimg.cn/blog_migrate/626b553da7eeb502796a013d754fb7e7.png" alt="在这里插入图片描述" /></p> 
+<p>表4&#xff1a;单车</p> 
+<p><img src="https://i-blog.csdnimg.cn/blog_migrate/dbd56f23ebec57367c9c96770cdab65a.png" alt="在这里插入图片描述" /></p> 
+<p>表5&#xff1a;运行记录<br /> <img src="https://i-blog.csdnimg.cn/blog_migrate/759d8a3e29143a827c1b9427601c92c3.png" alt="在这里插入图片描述" /></p> 
+<p>表6&#xff1a;位置</p> 
+<p><img src="https://i-blog.csdnimg.cn/blog_migrate/22fae24c86d6c2734e4fb6cbd32b87b0.png" alt="在这里插入图片描述" /></p> 
+<p>表7&#xff1a;评价反馈<br /> <img src="https://i-blog.csdnimg.cn/blog_migrate/2b96c3e629fd4fc8ba59849f6caf0bbc.png" alt="在这里插入图片描述" /></p> 
+<p>–表1&#xff1a;用户表</p> 
+<pre><code class="prism language-sql"><span class="token keyword">drop</span> <span class="token keyword">table</span> <span class="token keyword">if</span> <span class="token keyword">exists</span> 用户		
+<span class="token keyword">create</span> <span class="token keyword">table</span> 用户<span class="token punctuation">(</span>
+	用户名 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span> <span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>
+	账号 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token keyword">primary</span> <span class="token keyword">key</span><span class="token punctuation">,</span>
+	密码 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>
+	余额 <span class="token keyword">int</span> <span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>
+	总充值金额 <span class="token keyword">int</span> <span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>
+	vip等级 <span class="token keyword">int</span> <span class="token operator">not</span> <span class="token boolean">null</span>
+<span class="token punctuation">)</span>
+</code></pre> 
+<p>–表2&#xff1a;维修员表</p> 
+<pre><code class="prism language-sql"><span class="token keyword">drop</span> <span class="token keyword">table</span> <span class="token keyword">if</span> <span class="token keyword">exists</span> 维修员
+<span class="token keyword">create</span> <span class="token keyword">table</span> 维修员<span class="token punctuation">(</span>
+	维修员名 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span> <span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>
+	账号 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token keyword">primary</span> <span class="token keyword">key</span><span class="token punctuation">,</span>
+	密码 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+</code></pre> 
+<p>–表3&#xff1a;管理员表</p> 
+<pre><code class="prism language-sql"><span class="token keyword">drop</span> <span class="token keyword">table</span> <span class="token keyword">if</span> <span class="token keyword">exists</span> 管理员
+<span class="token keyword">create</span> <span class="token keyword">table</span> 管理员<span class="token punctuation">(</span>
+	管理员名 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>
+	账号 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token keyword">primary</span> <span class="token keyword">key</span><span class="token punctuation">,</span>
+	密码 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">not</span> <span class="token boolean">null</span>
+<span class="token punctuation">)</span>
+</code></pre> 
+<p>–表4&#xff1a;单车表</p> 
+<pre><code class="prism language-sql"><span class="token keyword">drop</span> <span class="token keyword">table</span> <span class="token keyword">if</span> <span class="token keyword">exists</span> 单车
+<span class="token keyword">create</span> <span class="token keyword">table</span> 单车
+<span class="token punctuation">(</span>
+	编号 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token keyword">primary</span> <span class="token keyword">key</span><span class="token punctuation">,</span>
+	是否在运行 <span class="token keyword">bit</span><span class="token punctuation">,</span>
+	是否可用 <span class="token keyword">bit</span>			<span class="token comment">--不可用时向维修员报修</span>
+<span class="token punctuation">)</span>
+</code></pre> 
+<p>–表5&#xff1a;运行记录表</p> 
+<pre><code class="prism language-sql"><span class="token keyword">if</span> <span class="token keyword">exists</span> <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dbo<span class="token punctuation">.</span>sysobjects <span class="token keyword">where</span> ID <span class="token operator">&#61;</span> OBJECT_ID<span class="token punctuation">(</span>N<span class="token string">&#39;运行记录&#39;</span><span class="token punctuation">)</span> <span class="token operator">AND</span> OBJECTPROPERTY<span class="token punctuation">(</span>ID<span class="token punctuation">,</span> <span class="token string">&#39;IsUserTable&#39;</span><span class="token punctuation">)</span> <span class="token operator">&#61;</span> <span class="token number">1</span><span class="token punctuation">)</span>     
+	<span class="token keyword">drop</span> <span class="token keyword">table</span> 运行记录
+<span class="token keyword">create</span> <span class="token keyword">table</span> 运行记录<span class="token punctuation">(</span>
+	记录编号 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span> <span class="token keyword">primary</span> <span class="token keyword">key</span><span class="token punctuation">,</span>
+	用户账号 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>
+	单车编号 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	起始时间 <span class="token keyword">datetime</span><span class="token punctuation">,</span>
+	结束时间 <span class="token keyword">datetime</span><span class="token punctuation">,</span>
+	费用 <span class="token keyword">int</span>	<span class="token operator">not</span> <span class="token boolean">null</span>
+	<span class="token comment">/*
+	--外键约束&#xff0c;用于级联操作
+	constraint a1 foreign key(单车编号) references 单车(编号)
+		on update cascade
+	*/</span>
+<span class="token punctuation">)</span>	
+</code></pre> 
+<p>–表6&#xff1a;城市地理表</p> 
+<pre><code class="prism language-sql"><span class="token keyword">drop</span> <span class="token keyword">table</span> <span class="token keyword">if</span> <span class="token keyword">exists</span> 位置
+<span class="token keyword">create</span> <span class="token keyword">table</span> 位置<span class="token punctuation">(</span>
+	当前位置 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span> <span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>	<span class="token comment">--成熟的app可以通过定位自动输入&#xff0c;但在这里需要用户手动输入</span>
+	在市内否 <span class="token keyword">bit</span><span class="token punctuation">,</span>					<span class="token comment">--单车默认在室内运行&#xff0c;离开市区额外收费</span>
+	可否停车 <span class="token keyword">bit</span>					<span class="token comment">--某些位置可以停车&#xff0c;某些不可以</span>
+<span class="token punctuation">)</span>
+<span class="token comment">--表7&#xff1a;用户评价表</span>
+<span class="token keyword">drop</span> <span class="token keyword">table</span> <span class="token keyword">if</span> <span class="token keyword">exists</span> 评价反馈
+<span class="token keyword">create</span> <span class="token keyword">table</span> 评价反馈<span class="token punctuation">(</span>
+	用户账号 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>
+	行驶记录 <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>
+	评价 <span class="token keyword">int</span>	
+<span class="token punctuation">)</span>
+</code></pre> 
+<h2><a id="2_128"></a>2.级联操作</h2> 
+<p>样例一</p> 
+<pre><code class="prism language-sql"><span class="token comment">--外键约束1&#xff0c;用于级联操作</span>
+<span class="token keyword">if</span> <span class="token keyword">exists</span><span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> sysobjects <span class="token keyword">where</span> name<span class="token operator">&#61;</span><span class="token string">&#39;a1&#39;</span><span class="token punctuation">)</span> 
+	<span class="token keyword">alter</span> <span class="token keyword">table</span> 运行记录 <span class="token keyword">drop</span> <span class="token keyword">constraint</span> a1<span class="token punctuation">;</span>
+<span class="token keyword">alter</span> <span class="token keyword">table</span> 运行记录 <span class="token keyword">add</span>  <span class="token keyword">constraint</span> a1 <span class="token keyword">foreign</span> <span class="token keyword">key</span><span class="token punctuation">(</span>单车编号<span class="token punctuation">)</span> <span class="token keyword">references</span> 单车<span class="token punctuation">(</span>编号<span class="token punctuation">)</span>
+		<span class="token keyword">on</span> <span class="token keyword">update</span> <span class="token keyword">cascade</span><span class="token punctuation">;</span>
+
+<span class="token comment">/*update完成之后&#xff0c;会调用外键约束&#xff0c;更改运行记录中单车编号*/</span>
+<span class="token keyword">update</span> 单车	<span class="token keyword">set</span> 编号<span class="token operator">&#61;</span><span class="token string">&#39;00009&#39;</span>	<span class="token keyword">from</span> 单车 <span class="token keyword">where</span> 编号<span class="token operator">&#61;</span><span class="token string">&#39;00001&#39;</span><span class="token punctuation">;</span>
+</code></pre> 
+<p>将编号为00001的单车编号换为00009&#xff0c;表“运行记录”中相应单车的标号也会变为00009&#xff1a;<br /> <img src="https://i-blog.csdnimg.cn/blog_migrate/d82e1d1556f4dfb797e90b4fc7f16712.png" alt="在这里插入图片描述" /><br /> <img src="https://i-blog.csdnimg.cn/blog_migrate/3766a7d9291588038d94e9d375fe2247.png" alt="在这里插入图片描述" /></p> 
+<h2><a id="3_148"></a>3.触发器和存储过程</h2> 
+<pre><code class="prism language-sql"><span class="token comment">--触发器tri1,当用户总充值金额变化时&#xff0c;vip等级也自动变化,--总充值金额每增加100&#xff0c;vip等级加1</span>
+go
+<span class="token keyword">create</span> <span class="token keyword">trigger</span> tri1
+<span class="token keyword">on</span> 用户 
+<span class="token keyword">for</span> <span class="token keyword">update</span>
+<span class="token keyword">as</span>	
+	<span class="token keyword">begin</span>
+		<span class="token comment">--print(&#39;触发器执行&#39;)</span>
+		<span class="token keyword">declare</span> <span class="token variable">&#64;sql</span> <span class="token keyword">int</span>
+		<span class="token keyword">set</span> <span class="token variable">&#64;sql</span><span class="token operator">&#61;</span><span class="token number">100</span>
+		<span class="token keyword">update</span> 用户 <span class="token keyword">set</span> vip等级<span class="token operator">&#61;</span>总充值金额<span class="token operator">/</span><span class="token number">100</span> <span class="token keyword">from</span> 用户
+		<span class="token keyword">where</span><span class="token punctuation">(</span>总充值金额<span class="token operator">&gt;</span><span class="token variable">&#64;sql</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">end</span>
+go
+
+<span class="token comment">/*更新用户的‘总充值金额’&#xff0c;触发器会更改用户的‘vip等级’*/</span>
+<span class="token keyword">update</span> 用户  <span class="token keyword">set</span> 总充值金额<span class="token operator">&#61;</span><span class="token number">500</span>	<span class="token keyword">from</span> 用户 <span class="token keyword">where</span> 账号<span class="token operator">&#61;</span><span class="token string">&#39;a001&#39;</span><span class="token punctuation">;</span>
+</code></pre> 
+<p>将用户“a001”的总充值金额变为500&#xff0c;那么在触发器作用下其vip等级变为5&#xff1a;<img src="https://i-blog.csdnimg.cn/blog_migrate/223518020c8bf798a7328401c639d853.png" alt="&#xff1a;" /><br /> <img src="https://i-blog.csdnimg.cn/blog_migrate/24d3b5684459edc875833a7f5d5e28d2.png" alt="在这里插入图片描述" /></p> 
+<pre><code class="prism language-sql"><span class="token comment">--函数f1&#xff0c;用于计算单车运行费用&#xff0c;每小时2元</span>
+<span class="token keyword">drop</span> <span class="token keyword">function</span> <span class="token keyword">if</span> <span class="token keyword">exists</span> f1
+go
+<span class="token keyword">create</span> <span class="token keyword">function</span> f1<span class="token punctuation">(</span><span class="token variable">&#64;a</span> <span class="token keyword">datetime</span><span class="token punctuation">,</span><span class="token variable">&#64;b</span> <span class="token keyword">datetime</span><span class="token punctuation">)</span> <span class="token keyword">returns</span> <span class="token keyword">int</span>
+<span class="token keyword">as</span> 
+	<span class="token keyword">begin</span>
+		<span class="token keyword">declare</span> <span class="token variable">&#64;num1</span> <span class="token keyword">int</span><span class="token punctuation">,</span><span class="token variable">&#64;num2</span> <span class="token keyword">int</span>
+		<span class="token keyword">set</span> <span class="token variable">&#64;num1</span><span class="token operator">&#61;</span><span class="token punctuation">(</span><span class="token keyword">select</span> datediff<span class="token punctuation">(</span>hh<span class="token punctuation">,</span><span class="token variable">&#64;a</span><span class="token punctuation">,</span><span class="token variable">&#64;b</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+		<span class="token keyword">set</span> <span class="token variable">&#64;num2</span><span class="token operator">&#61;</span><span class="token variable">&#64;num1</span><span class="token operator">*</span><span class="token number">2</span>
+		<span class="token keyword">return</span> <span class="token variable">&#64;num2</span>
+	<span class="token keyword">end</span>
+go
+
+<span class="token comment">--函数f2&#xff0c;筛选余额小于&#64;a2的用户</span>
+<span class="token keyword">drop</span> <span class="token keyword">function</span> <span class="token keyword">if</span> <span class="token keyword">exists</span> f2
+go
+<span class="token keyword">create</span> <span class="token keyword">function</span> f2<span class="token punctuation">(</span><span class="token variable">&#64;a2</span> <span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token keyword">returns</span> <span class="token keyword">table</span>
+<span class="token keyword">as</span>
+	<span class="token keyword">return</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> 用户 <span class="token keyword">where</span><span class="token punctuation">(</span>余额<span class="token operator">&lt;</span><span class="token variable">&#64;a2</span><span class="token punctuation">)</span>
+go
+<span class="token comment">/*测试&#xff0c;找出余额小于20的用户*/</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> f2<span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre> 
+<p><img src="https://i-blog.csdnimg.cn/blog_migrate/58a163e865e8af59c6cebc65f32733e4.png" alt="在这里插入图片描述" /></p> 
+<h2><a id="4_204"></a>4.权限管理</h2> 
+<pre><code class="prism language-sql">go
+<span class="token keyword">create</span> role persons<span class="token punctuation">;</span>
+go
+<span class="token keyword">grant</span> <span class="token keyword">select</span><span class="token punctuation">,</span><span class="token keyword">update</span><span class="token punctuation">,</span><span class="token keyword">delete</span><span class="token punctuation">,</span><span class="token keyword">insert</span> <span class="token keyword">on</span> 维修员 <span class="token keyword">to</span> persons <span class="token keyword">with</span> <span class="token keyword">grant</span> <span class="token keyword">option</span><span class="token punctuation">;</span>
+<span class="token keyword">grant</span> <span class="token keyword">select</span><span class="token punctuation">,</span><span class="token keyword">update</span><span class="token punctuation">,</span><span class="token keyword">delete</span><span class="token punctuation">,</span><span class="token keyword">insert</span> <span class="token keyword">on</span> 用户 <span class="token keyword">to</span> persons <span class="token keyword">with</span> <span class="token keyword">grant</span> <span class="token keyword">option</span><span class="token punctuation">;</span>
+<span class="token keyword">grant</span> <span class="token keyword">select</span><span class="token punctuation">,</span><span class="token keyword">update</span><span class="token punctuation">,</span><span class="token keyword">delete</span><span class="token punctuation">,</span><span class="token keyword">insert</span> <span class="token keyword">on</span> 管理员 <span class="token keyword">to</span> persons <span class="token keyword">with</span> <span class="token keyword">grant</span> <span class="token keyword">option</span><span class="token punctuation">;</span>
+<span class="token keyword">grant</span> <span class="token keyword">select</span><span class="token punctuation">,</span><span class="token keyword">update</span><span class="token punctuation">,</span><span class="token keyword">delete</span><span class="token punctuation">,</span><span class="token keyword">insert</span> <span class="token keyword">on</span> 单车 <span class="token keyword">to</span> persons <span class="token keyword">with</span> <span class="token keyword">grant</span> <span class="token keyword">option</span><span class="token punctuation">;</span>
+<span class="token keyword">grant</span> <span class="token keyword">select</span><span class="token punctuation">,</span><span class="token keyword">update</span><span class="token punctuation">,</span><span class="token keyword">delete</span><span class="token punctuation">,</span><span class="token keyword">insert</span> <span class="token keyword">on</span> 位置 <span class="token keyword">to</span> persons <span class="token keyword">with</span> <span class="token keyword">grant</span> <span class="token keyword">option</span><span class="token punctuation">;</span>
+创建一个role<span class="token punctuation">,</span>将其命名为persons<span class="token punctuation">,</span>然后将各种权限授权给persons
+
+
+<span class="token keyword">drop</span> <span class="token keyword">user</span>  <span class="token keyword">if</span> <span class="token keyword">exists</span> person1<span class="token punctuation">;</span>
+<span class="token keyword">create</span> login person1 <span class="token keyword">with</span> password<span class="token operator">&#61;</span><span class="token string">&#39;123456&#39;</span><span class="token punctuation">,</span>default_database<span class="token operator">&#61;</span>bicycle<span class="token punctuation">;</span>
+<span class="token keyword">create</span> <span class="token keyword">user</span> person1 <span class="token keyword">for</span> login person1 <span class="token keyword">with</span> default_schema<span class="token operator">&#61;</span>dbo<span class="token punctuation">;</span>
+<span class="token keyword">alter</span> role persons <span class="token keyword">add</span> member person1
+</code></pre> 
+<p>创建一个用户person1&#xff0c;密码为123456&#xff0c;默认的数据库是bicycle&#xff0c;并将其放入persons中&#xff0c;这样persons有的权限person1都有了。</p> 
+<p>然后我们以用户person1的身份重新登录<br /> <img src="https://i-blog.csdnimg.cn/blog_migrate/aed0a7809c29773744def87661bd0db8.png" alt="在这里插入图片描述" /></p> 
+<p>可以看到我们是以person1的身份登陆的&#xff0c;默认链接的数据库是bicycle&#xff1b;<br /> 我们随便创建一个表&#xff0c;由于在sql中我们没有赋予person1创建表的权限&#xff0c;所以提示我们无权创建表。<br /> <img src="https://i-blog.csdnimg.cn/blog_migrate/8b15d8d2140bb8b08197f82f8d672539.png" alt="在这里插入图片描述" /></p> 
+<p>我们重新写入sql语句&#xff0c;因为我们授予了person1 有select、update、delete等权限&#xff0c;所以我们能够完成以下语句。<br /> <img src="https://i-blog.csdnimg.cn/blog_migrate/62f66f3d674eddfc0c4a47c6c4ac2c9d.png" alt="在这里插入图片描述" /></p> 
+<h3><a id="_236"></a>相关资源&#xff1a;</h3> 
+<p><a href="https://blog.csdn.net/weixin_50836014/article/details/125684163">用Delphi写一个单车管理系统</a><br /> <a href="https://blog.csdn.net/weixin_50836014/article/details/125684207">单车管理系统——1.文档设计及sql代码说明</a><br /> <a href="https://blog.csdn.net/weixin_50836014/article/details/125684374">单车管理系统——2.delphi页面说明</a><br /> <a href="https://blog.csdn.net/weixin_50836014/article/details/125684523">单车管理系统——3.delphi主要代码说明</a><br /> <a href="https://download.csdn.net/download/weixin_50836014/85968668">完整的文件代码及设计文档</a></p> 
+<p><br /></p> 
+<h3><a id="_244"></a>更多资源&#xff1a;</h3> 
+<p><strong><a href="https://blog.csdn.net/weixin_50836014/article/details/125687455">北京理工大学—计算机专业课程资源&#xff1a;https://blog.csdn.net/weixin_50836014/article/details/125687455</a></strong></p>
+                </div>
+                <link href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/editerView/markdown_views-a5d25dd831.css" rel="stylesheet">
+                <link href="https://csdnimg.cn/release/blogv2/dist/mdeditor/css/style-e504d6a974.css" rel="stylesheet">
+        </div>
+    </article>
+  <script>
+    $(function() {
+      setTimeout(function () {
+        var mathcodeList = document.querySelectorAll('.htmledit_views img.mathcode');
+        if (mathcodeList.length > 0) {
+          for (let i = 0; i < mathcodeList.length; i++) {
+            if (mathcodeList[i].complete) {
+              if (mathcodeList[i].naturalWidth === 0 || mathcodeList[i].naturalHeight === 0) {
+                var alt = mathcodeList[i].alt;
+                alt = '\\(' + alt + '\\)';
+                var curSpan = $('<span class="img-codecogs"></span>');
+                curSpan.text(alt);
+                $(mathcodeList[i]).before(curSpan);
+                $(mathcodeList[i]).remove();
+              }
+            } else {
+              mathcodeList[i].onerror = function() {
+                var alt = mathcodeList[i].alt;
+                alt = '\\(' + alt + '\\)';
+                var curSpan = $('<span class="img-codecogs"></span>');
+                curSpan.text(alt);
+                $(mathcodeList[i]).before(curSpan);
+                $(mathcodeList[i]).remove();
+              };
+            }
+          }
+          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+        }
+      }, 500)
+    });
+  </script>
+</div>
+<div class="directory-boxshadow-dialog" style="display:none;">
+  <div class="directory-boxshadow-dialog-box">
+  </div>
+   <div class="vip-limited-time-offer-box-new" id="vip-limited-time-offer-box-new">
+      <img class="limited-img limited-img-new" src="https://csdnimg.cn/release/blogv2/dist/pc/img/vip-limited-close-newWhite.png">
+      <div class="vip-limited-time-top">
+        确定要放弃本次机会？
+      </div>
+      <span class="vip-limited-time-text">福利倒计时</span>
+      <div class="limited-time-box-new">
+        <span class="time-hour"></span>
+        <i>:</i>
+        <span class="time-minite"></span>
+        <i>:</i>
+        <span class="time-second"></span>
+      </div>
+      <div class="limited-time-vip-box">
+        <p>
+          <img class="coupon-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/vip-limited-close-roup.png">
+          <span class="def">立减 ¥</span>
+          <span class="active limited-num"></span>
+        </p>
+        <span class="">普通VIP年卡可用</span>
+      </div>
+      <a class="limited-time-btn-new" href="https://mall.csdn.net/vip" data-report-click='{"spm":"1001.2101.3001.9621"}' data-report-query='spm=1001.2101.3001.9621'>立即使用</a>
+  </div>
+</div>
+    <div class="more-toolbox-new more-toolbar" id="toolBarBox">
+      <div class="left-toolbox">
+        <div class="toolbox-left">
+            <div class="profile-box">
+              <a class="profile-href" target="_blank" href="https://blog.csdn.net/weixin_50836014"><img class="profile-img" src="https://profile-avatar.csdnimg.cn/569f166329924ccb8e4476e87aec0e57_weixin_50836014.jpg!1">
+                <span class="profile-name">
+                  一只野指针.
+                </span>
+              </a>
+            </div>
+            <div class="profile-attend">
+                <a class="tool-attend tool-bt-button tool-bt-attend" href="javascript:;" data-report-view='{"mod":"1592215036_002","spm":"1001.2101.3001.4232","extend1":"关注"}'>关注</a>
+              <a class="tool-item-follow active-animation" style="display:none;">关注</a>
+            </div>
+        </div>
+        <div class="toolbox-middle">
+          <ul class="toolbox-list">
+            <li class="tool-item tool-item-size tool-active is-like" id="is-like">
+              <a class="tool-item-href">
+                <img style="display:none;" id="is-like-imgactive-animation-like" class="animation-dom active-animation" src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarThumbUpactive.png" alt="">
+                <img class="isactive" style="display:none" id="is-like-imgactive" src="https://csdnimg.cn/release/blogv2/dist/pc/img/toolbar/like-active.png" alt="">
+                <img class="isdefault" style="display:block" id="is-like-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/toolbar/like.png" alt="">
+                <span id="spanCount" class="count ">
+                    2
+                </span>
+              </a>
+              <div class="tool-hover-tip"><span class="text space">点赞</span></div>
+            </li>
+            <li class="tool-item tool-item-size tool-active is-unlike" id="is-unlike">
+              <a class="tool-item-href">
+                <img class="isactive" style="margin-right:0px;display:none" id="is-unlike-imgactive" src="https://csdnimg.cn/release/blogv2/dist/pc/img/toolbar/unlike-active.png" alt="">
+                <img class="isdefault" style="margin-right:0px;display:block" id="is-unlike-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/toolbar/unlike.png" alt="">
+                <span id="unlikeCount" class="count "></span>
+              </a>
+              <div class="tool-hover-tip"><span class="text space">踩</span></div>
+            </li>
+            <li class="tool-item tool-item-size tool-active is-collection ">
+              <a class="tool-item-href" href="javascript:;" data-report-click='{"mod":"popu_824","spm":"1001.2101.3001.4130","ab":"new"}'>
+                <img style="display:none" id="is-collection-img-collection" class="animation-dom active-animation" src="https://csdnimg.cn/release/blogv2/dist/pc/img/toolbar/collect-active.png" alt="">
+                <img class="isdefault" id="is-collection-img" style="display:block" src="https://csdnimg.cn/release/blogv2/dist/pc/img/toolbar/collect.png" alt="">
+                <img class="isactive" id="is-collection-imgactive" style="display:none" src="https://csdnimg.cn/release/blogv2/dist/pc/img/newCollectActive.png" alt="">
+                <span class="count get-collection " data-num="12" id="get-collection">
+                    12
+                </span>
+              </a>
+              <div class="tool-hover-tip collect">
+                <div class="collect-operate-box">
+                  <span class="collect-text" id="is-collection">
+                    收藏
+                  </span>
+                </div>
+              </div>
+              <div class="tool-active-list">
+                <div class="text">
+                  觉得还不错?
+                  <span class="collect-text" id="tool-active-list-collection">
+                    一键收藏
+                  </span>
+                 <img id="tool-active-list-close" src="https://csdnimg.cn/release/blogv2/dist/pc/img/collectionCloseWhite.png" alt="">
+                </div>
+              </div>
+            </li>
+            <li class="tool-item tool-item-size tool-active tool-item-comment">
+              <div class="guide-rr-first">
+                <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/guideRedReward01.png" alt="">
+                <button class="btn-guide-known">知道了</button>
+              </div>
+                <a class="tool-item-href" href="#commentBox" data-report-click='{"spm":"1001.2101.3001.7009"}'>
+                <img class="isdefault" src="https://csdnimg.cn/release/blogv2/dist/pc/img/toolbar/comment.png" alt="">
+                <span class="count">
+                      0
+                </span>
+              </a>
+              <div class="tool-hover-tip"><span class="text space">评论</span></div>
+            </li>
+            <li class="tool-item tool-item-size tool-active tool-QRcode" data-type="article" id="tool-share">
+              <a class="tool-item-href" href="javascript:;" data-report-view='{"spm":"3001.4129","extra":{"type":"blogdetail"}}'>
+                <img class="isdefault" src="https://csdnimg.cn/release/blogv2/dist/pc/img/toolbar/share.png" alt="">
+                <span class="count">分享</span>
+              </a>
+                <div class="QRcode" id="tool-QRcode">
+                <div class="share-bg-box">
+                  <div class="share-content">
+                    <a id="copyPosterUrl" data-type="link" class="btn-share">复制链接</a>
+                  </div>
+                  <div class="share-content">
+                    <a class="btn-share" data-type="qq">分享到 QQ</a>
+                  </div>
+                  <div class="share-content">
+                    <a class="btn-share" data-type="weibo">分享到新浪微博</a>
+                  </div>
+                  <div class="share-code">
+                    <div class="share-code-box" id='shareCode'></div>
+                    <div class="share-code-text">
+                      <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/share/icon-wechat.png" alt="">扫一扫
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+                <li class="tool-item tool-item-size tool-active tool-item-reward">
+                  <a class="tool-item-href" href="javascript:;" data-report-click='{"mod":"popu_830","spm":"1001.2101.3001.4237","dest":"","ab":"new"}'>
+                    <img class="isdefault reward-bt" id="rewardBtNew" src="https://csdnimg.cn/release/blogv2/dist/pc/img/toolbar/reward.png" alt="打赏">
+                    <span class="count">打赏</span>
+                  </a>
+                  <div class="tool-hover-tip"><span class="text space">打赏</span></div>
+                </li>
+          <li class="tool-item tool-item-size tool-active is-more" id="is-more">
+            <a class="tool-item-href">
+              <img class="isdefault" style="margin-right:0px;display:block" src="https://csdnimg.cn/release/blogv2/dist/pc/img/toolbar/more.png" alt="">
+              <span class="count"></span>
+            </a>
+            <div class="more-opt-box">
+              <div class="mini-box">
+                    <a class="tool-item-href" id="rewardBtNewHide" data-report-click='{"spm":"3001.4237","extra":"{\"type\":\"hide\"}"}'>
+                      <img class="isdefault reward-bt" src="https://csdnimg.cn/release/blogv2/dist/pc/img/toolbar/reward.png" alt="打赏">
+                      <span class="count">打赏</span>
+                    </a>
+                <a class="tool-item-href" id="toolReportBtnHide">
+                  <img class="isdefault" src="https://csdnimg.cn/release/blogv2/dist/pc/img/toolbar/report.png" alt="">
+                  <span class="count">举报</span>
+                </a>
+              </div>
+              <div class="normal-box">
+                <a class="tool-item-href" id="toolReportBtnHideNormal">
+                  <img class="isdefault" src="https://csdnimg.cn/release/blogv2/dist/pc/img/toolbar/report.png" alt="">
+                  <span class="count">举报</span>
+                </a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="toolbox-right">
+            <div class="tool-directory">
+                <a class="bt-columnlist-show"
+                  data-id="12042345"
+                  data-free="true"
+                  data-description="数据库"
+                  data-subscribe="false"
+                  data-title="数据库"
+                  data-img="https://i-blog.csdnimg.cn/blog_column_migrate/b9346faac8287efffed28c8b2d898da7.png?x-oss-process=image/resize,m_fixed,h_224,w_224"
+                  data-url="https://blog.csdn.net/weixin_50836014/category_12042345.html"
+                  data-sum="7"
+                  data-people="1"
+                  data-price="0"
+                  data-hotRank="0"
+                  data-status="true"
+                  data-oldprice="0"
+                  data-join="false"
+                  data-studyvip="false"
+                  data-studysubscribe="false"
+                  data-report-view='{"spm":"1001.2101.3001.6334","extend1":"专栏目录"}'
+                  data-report-click='{"spm":"1001.2101.3001.6334","extend1":"专栏目录"}'>专栏目录</a>
+          </div>
+</div>
+</div>
+</div>
+<script type=text/javascript crossorigin src="https://csdnimg.cn/release/phoenix/production/qrcode-7c90a92189.min.js"></script>
+<script type="text/javascript" crossorigin src="https://g.csdnimg.cn/common/csdn-login-box/csdn-login-box.js"></script>
+<script type="text/javascript" crossorigin src="https://g.csdnimg.cn/collection-box/2.1.2/collection-box.js"></script>                <div class="first-recommend-box recommend-box ">
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/abo2020/article/details/129965531"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6661.1","mod":"popu_871","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant_t0.none-task-blog-2~default~BlogCommendFromBaidu~PaidSort-1-129965531-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"1","strategy":"2~default~BlogCommendFromBaidu~PaidSort","dest":"https://blog.csdn.net/abo2020/article/details/129965531"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/abo2020/article/details/129965531" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6661.1","mod":"popu_871","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant_t0.none-task-blog-2~default~BlogCommendFromBaidu~PaidSort-1-129965531-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"1","strategy":"2~default~BlogCommendFromBaidu~PaidSort","dest":"https://blog.csdn.net/abo2020/article/details/129965531"}'  data-report-query='spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7EPaidSort-1-129965531-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7EPaidSort-1-129965531-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">基于web的共享<em>单车</em><em>管理系统</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/abo2020" target="_blank"><span class="blog-title">鹏飞的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">04-10</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					499
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/abo2020/article/details/129965531" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6661.1","mod":"popu_871","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant_t0.none-task-blog-2~default~BlogCommendFromBaidu~PaidSort-1-129965531-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"1","strategy":"2~default~BlogCommendFromBaidu~PaidSort","dest":"https://blog.csdn.net/abo2020/article/details/129965531"}'  data-report-query='spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7EPaidSort-1-129965531-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7EPaidSort-1-129965531-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">总体<em>设计</em>主要包括系统功能<em>设计</em>，系统总体结构<em>设计</em>，系统数据结构<em>设计</em>和系统安全<em>设计</em>等；详细<em>设计</em>主要包括系统<em>数据库</em>访问的实现，主要功能模块的具体实现，模块实现关键<em>代码</em>等。最后对系统进行了功能测试，并对测试结果进行了分析总结，得出系统的不足及需要改进的地方，为以后的系统维护提供了方便，同时也为今后开发类似系统提供了借鉴和帮助。随着时代的发展，我国的国民经济一直在稳步的提升，共享<em>单车</em>的是用来一直在不断的攀升，为了能够更加方便快捷的管理共享<em>单车</em>，需要开发一套利用计算机进行管理的共享<em>单车</em>后台<em>管理系统</em>。</div>
+			</a>
+		</div>
+	</div>
+</div>
+                </div>
+            <script src="https://csdnimg.cn/release/blogv2/dist/components/js/pc_wap_commontools-a1b42bf722.min.js" type="text/javascript" async></script>
+              <div class="second-recommend-box recommend-box ">
+<div class="recommend-item-box type_download clearfix" data-url="https://download.csdn.net/download/sinat_39023920/10949249"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.1","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~BlogCommendFromBaidu~Rate-1-10949249-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"1","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://download.csdn.net/download/sinat_39023920/10949249"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://download.csdn.net/download/sinat_39023920/10949249" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.1","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~BlogCommendFromBaidu~Rate-1-10949249-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"1","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://download.csdn.net/download/sinat_39023920/10949249"}'  data-report-query='spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EBlogCommendFromBaidu%7ERate-1-10949249-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EBlogCommendFromBaidu%7ERate-1-10949249-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">共享<em>单车</em><em>管理系统</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info display-flex">
+					<span class="info-block">02-04</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://download.csdn.net/download/sinat_39023920/10949249" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.1","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~BlogCommendFromBaidu~Rate-1-10949249-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"1","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://download.csdn.net/download/sinat_39023920/10949249"}'  data-report-query='spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EBlogCommendFromBaidu%7ERate-1-10949249-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EBlogCommendFromBaidu%7ERate-1-10949249-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">基于react+antd项目搭建成一个简单的共享<em>单车</em>系统，此项目可以帮你熟悉antd常用的组件，另外可以熟悉react</div>
+			</a>
+		</div>
+	</div>
+</div>
+              </div>
+<a id="commentBox" name="commentBox"></a>
+  <div id="pcCommentBox" class="comment-box comment-box-new2 unlogin-comment-box-new" style="display:none">
+      <div class="unlogin-comment-model">
+          <span class="unlogin-comment-tit">参与评论</span>
+        <span class="unlogin-comment-text">您还未登录，请先</span>
+        <span class="unlogin-comment-bt">登录</span>
+        <span class="unlogin-comment-text">后发表或查看评论</span>
+      </div>
+  </div>
+              <div class="recommend-box insert-baidu-box recommend-box-style ">
+                <div class="recommend-item-box no-index" style="display:none"></div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/flf1234567898/article/details/104660142"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.2","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-2-104660142-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"2","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/flf1234567898/article/details/104660142"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/flf1234567898/article/details/104660142" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.2","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-2-104660142-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"2","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/flf1234567898/article/details/104660142"}'  data-report-query='spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-2-104660142-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-2-104660142-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">自行车<em>管理系统</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/flf1234567898" target="_blank"><span class="blog-title">flf1234567898的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">03-05</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					2065
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/flf1234567898/article/details/104660142" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.2","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-2-104660142-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"2","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/flf1234567898/article/details/104660142"}'  data-report-query='spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-2-104660142-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-2-104660142-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">在大家学完C语言后，经常会被学校要求做很多<em>管理系统</em>，主流做法当选链表，但是很多问题就来了，在学习阶段写过最多基本上就是50行<em>代码</em>左右了，一下子做个小型<em>管理系统</em>问题就比较多。小编当然也是在学完初阶C语言之后过了半年才完整做出来。所以分享一下经验。
+ <em>1</em>：首先数据结构：链表要会，而且要熟练掌握其增删查改；
+ 2：调试<em>代码</em>要会，很多<em>代码</em>一行一行的看到最后真的是很让人头大，不会调试和监控变量是个很痛苦的<em>.</em><em>.</em><em>.</em></div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/m0_71015850/article/details/132349937"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.3","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-3-132349937-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"3","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/m0_71015850/article/details/132349937"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/m0_71015850/article/details/132349937" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.3","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-3-132349937-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"3","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/m0_71015850/article/details/132349937"}'  data-report-query='spm=1001.2101.3001.6650.3&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-3-132349937-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-3-132349937-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">基于javaweb+my<em>sql</em>的ssm共享<em>单车</em><em>管理系统</em>(JavaWeb JSP My<em>SQL</em> Servlet SSM SpringBoot Bootstrap)</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/m0_71015850" target="_blank"><span class="blog-title">m0_71015850的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">08-17</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					255
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/m0_71015850/article/details/132349937" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.3","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-3-132349937-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"3","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/m0_71015850/article/details/132349937"}'  data-report-query='spm=1001.2101.3001.6650.3&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-3-132349937-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-3-132349937-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">基于javaweb+my<em>sql</em>的ssm共享<em>单车</em><em>管理系统</em>(JavaWeb JSP My<em>SQL</em> Servlet SSM SpringBoot Bootstrap)登录、注册、退出、用户模块、公告模块、<em>单车</em>模块、报修模块的增删改查管理。eclipse/idea/myeclipse/sts等均可配置运行。课程<em>设计</em>，大作业，毕业<em>设计</em>，项目练习，学习演示等。</div>
+			</a>
+		</div>
+	</div>
+</div>
+		<dl id="recommend-item-box-tow" class="recommend-item-box type_blog clearfix">
+			
+		</dl>
+<div class="recommend-item-box type_download clearfix" data-url="https://download.csdn.net/download/tangyang8942/16524088"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.4","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~BlogCommendFromBaidu~Rate-4-16524088-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"4","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://download.csdn.net/download/tangyang8942/16524088"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://download.csdn.net/download/tangyang8942/16524088" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.4","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~BlogCommendFromBaidu~Rate-4-16524088-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"4","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://download.csdn.net/download/tangyang8942/16524088"}'  data-report-query='spm=1001.2101.3001.6650.4&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EBlogCommendFromBaidu%7ERate-4-16524088-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EBlogCommendFromBaidu%7ERate-4-16524088-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">基于SSM的共享<em>单车</em><em>管理系统</em>【项目源码+<em>数据库</em>脚本】(毕设)</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info display-flex">
+					<span class="info-block">04-07</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://download.csdn.net/download/tangyang8942/16524088" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.4","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~BlogCommendFromBaidu~Rate-4-16524088-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"4","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://download.csdn.net/download/tangyang8942/16524088"}'  data-report-query='spm=1001.2101.3001.6650.4&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EBlogCommendFromBaidu%7ERate-4-16524088-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EBlogCommendFromBaidu%7ERate-4-16524088-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">一、项目简介
+本项目是一套基于SSM的共享<em>单车</em><em>管理系统</em>，主要针对计算机相关专业的正在做毕设的学生和需要项目实战练习的Java学习者。
+包含：项目源码、<em>数据库</em>脚本、软件工具、项目<em>说明</em>等，该项目可以直接作为毕设使用。
+项目都经过严格调试，确保可以运行！
+
+二、技术实现
+​后台框架：Spring、SpringMVC、MyBatis
+​<em>数据库</em>：My<em>SQL</em>
+开发环境：JDK、Eclipse、Tomcat
+
+三、系统功能
+（<em>1</em>）<em>单车</em>信息管理
+管理员在后台系统中可以浏览到所有的<em>单车</em>信息，并可凭借对应的<em>单车</em>编号搜索到指定的<em>单车</em>，还可看到<em>单车</em>的借还情况。
+（2）租金管理
+缴纳租金的信息会在这里显示，并统计当前的租金总和。还可通过<em>单车</em>号查询当前车辆的历史租金记录。
+（3）租赁管理
+用来添加新的租赁信息，需添加押金金额，预计付款金额，归还日期，备注等信息；用户还车时，在租赁信息中快速找到租赁记录，将是否归还改为已归还。
+（4）管理员信息管理
+超级管理员可以实现对其他管理员的管理，原则上一个存车处需要一个管理员，超级管理员可以将管理员与存车处进行绑定，在不需要时可以直接删除
+（5）信息统计
+系统对租金流水，保有押金，车辆统计，在库车辆，借车人次的统计。
+（6）管理员登录
+管理员凭账号密码即可登录本系统，并使用所有功能。
+（7）注销退出
+当管理员点击&ldquo;退出系统&rdquo;时可安全退出本系统。
+
+该系统功能完善、界面美观、操作简单、功能齐全、管理便捷，具有很高的实际应用价值。</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_download clearfix" data-url="https://download.csdn.net/download/wzl1997/10490924"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.5","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~BlogCommendFromBaidu~Rate-5-10490924-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"5","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://download.csdn.net/download/wzl1997/10490924"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://download.csdn.net/download/wzl1997/10490924" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.5","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~BlogCommendFromBaidu~Rate-5-10490924-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"5","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://download.csdn.net/download/wzl1997/10490924"}'  data-report-query='spm=1001.2101.3001.6650.5&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-10490924-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-10490924-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">校园共享<em>单车</em><em>管理系统</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info display-flex">
+					<span class="info-block">06-21</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://download.csdn.net/download/wzl1997/10490924" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.5","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~BlogCommendFromBaidu~Rate-5-10490924-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"5","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://download.csdn.net/download/wzl1997/10490924"}'  data-report-query='spm=1001.2101.3001.6650.5&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-10490924-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EBlogCommendFromBaidu%7ERate-5-10490924-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">软件工程做的课程<em>设计</em>，里面是JSP源码，后台连接<em>数据库</em>，可直接调试运行成功。</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_download clearfix" data-url="https://download.csdn.net/download/2301_78008478/88958713"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.6","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~OPENSEARCH~Rate-6-88958713-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"6","strategy":"2~default~OPENSEARCH~Rate","dest":"https://download.csdn.net/download/2301_78008478/88958713"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://download.csdn.net/download/2301_78008478/88958713" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.6","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~OPENSEARCH~Rate-6-88958713-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"6","strategy":"2~default~OPENSEARCH~Rate","dest":"https://download.csdn.net/download/2301_78008478/88958713"}'  data-report-query='spm=1001.2101.3001.6650.6&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-6-88958713-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-6-88958713-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">基于SSM+vue的高校共享<em>单车</em><em>管理系统</em>源码<em>数据库</em><em>.</em>zip</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info display-flex">
+					<span class="info-block">03-13</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://download.csdn.net/download/2301_78008478/88958713" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.6","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~OPENSEARCH~Rate-6-88958713-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"6","strategy":"2~default~OPENSEARCH~Rate","dest":"https://download.csdn.net/download/2301_78008478/88958713"}'  data-report-query='spm=1001.2101.3001.6650.6&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-6-88958713-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-6-88958713-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">《高校共享<em>单车</em><em>管理系统</em>的<em>设计</em>与实现&mdash;&mdash;基于SSM+Vue框架》  高校共享<em>单车</em><em>管理系统</em>是现代校园生活中一个重要的服务项目，它利用先进的信息技术，为师生提供便捷、绿色的出行方式。本系统采用的是主流的SSM（Spring、<em>.</em><em>.</em><em>.</em></div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_download clearfix" data-url="https://download.csdn.net/download/sinat_26552841/88058254"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.7","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~OPENSEARCH~Rate-7-88058254-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"7","strategy":"2~default~OPENSEARCH~Rate","dest":"https://download.csdn.net/download/sinat_26552841/88058254"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://download.csdn.net/download/sinat_26552841/88058254" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.7","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~OPENSEARCH~Rate-7-88058254-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"7","strategy":"2~default~OPENSEARCH~Rate","dest":"https://download.csdn.net/download/sinat_26552841/88058254"}'  data-report-query='spm=1001.2101.3001.6650.7&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-7-88058254-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-7-88058254-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">java毕业<em>设计</em>之校园<em>单车</em>租赁<em>管理系统</em>源码<em>.</em>zip</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info display-flex">
+					<span class="info-block">07-18</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://download.csdn.net/download/sinat_26552841/88058254" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.7","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~OPENSEARCH~Rate-7-88058254-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"7","strategy":"2~default~OPENSEARCH~Rate","dest":"https://download.csdn.net/download/sinat_26552841/88058254"}'  data-report-query='spm=1001.2101.3001.6650.7&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-7-88058254-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-7-88058254-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">《Java毕业<em>设计</em>：校园<em>单车</em>租赁<em>管理系统</em>源码解析》  在Java编程的学习过程中，毕业<em>设计</em>是一项重要的实践环节，它能够帮助学生将所学理论知识与实际应用相结合，提升问题解决能力和项目开发经验。本项目&mdash;&mdash;&ldquo;校园<em>单车</em><em>.</em><em>.</em><em>.</em></div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_download clearfix" data-url="https://download.csdn.net/download/zhaomengsen/89164929"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.8","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~OPENSEARCH~Rate-8-89164929-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"8","strategy":"2~default~OPENSEARCH~Rate","dest":"https://download.csdn.net/download/zhaomengsen/89164929"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://download.csdn.net/download/zhaomengsen/89164929" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.8","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~OPENSEARCH~Rate-8-89164929-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"8","strategy":"2~default~OPENSEARCH~Rate","dest":"https://download.csdn.net/download/zhaomengsen/89164929"}'  data-report-query='spm=1001.2101.3001.6650.8&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-8-89164929-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-8-89164929-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">校园共享<em>单车</em><em>管理系统</em> 软件工程做的课程<em>设计</em>，里面是JSP源码，后台连接<em>数据库</em>，可直接调试运行成功。<em>.</em>zip</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info display-flex">
+					<span class="info-block">04-18</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://download.csdn.net/download/zhaomengsen/89164929" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.8","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~OPENSEARCH~Rate-8-89164929-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"8","strategy":"2~default~OPENSEARCH~Rate","dest":"https://download.csdn.net/download/zhaomengsen/89164929"}'  data-report-query='spm=1001.2101.3001.6650.8&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-8-89164929-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-8-89164929-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">《校园共享<em>单车</em><em>管理系统</em>&mdash;&mdash;基于JSP的软件工程实践》  在当今信息化社会，共享<em>单车</em>已经成为城市出行的重要组成部分，尤其在校园环境中，便捷的共享<em>单车</em>服务为师生提供了极大的便利。本系统&mdash;&mdash;&ldquo;校园共享<em>单车</em>管理<em>.</em><em>.</em><em>.</em></div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_download clearfix" data-url="https://download.csdn.net/download/csbysj2020/89847298"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.9","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~OPENSEARCH~Rate-9-89847298-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"9","strategy":"2~default~OPENSEARCH~Rate","dest":"https://download.csdn.net/download/csbysj2020/89847298"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://download.csdn.net/download/csbysj2020/89847298" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.9","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~OPENSEARCH~Rate-9-89847298-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"9","strategy":"2~default~OPENSEARCH~Rate","dest":"https://download.csdn.net/download/csbysj2020/89847298"}'  data-report-query='spm=1001.2101.3001.6650.9&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-9-89847298-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-9-89847298-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">基于Web技术的共享<em>单车</em>可视化系统<em>设计</em>源码</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info display-flex">
+					<span class="info-block">10-05</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://download.csdn.net/download/csbysj2020/89847298" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.9","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-download-2~default~OPENSEARCH~Rate-9-89847298-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"9","strategy":"2~default~OPENSEARCH~Rate","dest":"https://download.csdn.net/download/csbysj2020/89847298"}'  data-report-query='spm=1001.2101.3001.6650.9&utm_medium=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-9-89847298-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-download-2%7Edefault%7EOPENSEARCH%7ERate-9-89847298-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">本文将详细介绍一个具体的项目&mdash;&mdash;&ldquo;基于Web技术的共享<em>单车</em>可视化系统<em>设计</em>源码&rdquo;的核心内容。  该项目包含了<em>1</em>98个文件，这些文件类型多样，主要包括88个JavaScript脚本、23个PNG图像、<em>1</em>8个Python脚本、<em>1</em>5个CSS样式表<em>.</em><em>.</em><em>.</em></div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/m0_66818464/article/details/127910680"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.10","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-10-127910680-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"10","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/m0_66818464/article/details/127910680"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/m0_66818464/article/details/127910680" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.10","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-10-127910680-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"10","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/m0_66818464/article/details/127910680"}'  data-report-query='spm=1001.2101.3001.6650.10&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-10-127910680-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-10-127910680-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">基于SSM+jsp+My<em>sql</em>的共享<em>单车</em><em>管理系统</em>、高校自行车<em>管理系统</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/m0_66818464" target="_blank"><span class="blog-title">m0_66818464的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">11-17</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					242
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/m0_66818464/article/details/127910680" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.10","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-10-127910680-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"10","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/m0_66818464/article/details/127910680"}'  data-report-query='spm=1001.2101.3001.6650.10&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-10-127910680-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-10-127910680-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">基于SSM+jsp+My<em>sql</em>的共享<em>单车</em><em>管理系统</em>、高校自行车<em>管理系统</em></div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/m0_66863468/article/details/125659417"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.11","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-11-125659417-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"11","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/m0_66863468/article/details/125659417"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/m0_66863468/article/details/125659417" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.11","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-11-125659417-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"11","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/m0_66863468/article/details/125659417"}'  data-report-query='spm=1001.2101.3001.6650.11&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-11-125659417-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-11-125659417-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">Java项目:在线车队货车<em>管理系统</em>(java+SSM+JSP+bootstrap+My<em>sql</em>)</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/m0_66863468" target="_blank"><span class="blog-title">m0_66863468的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">07-07</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					970
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/m0_66863468/article/details/125659417" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.11","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-11-125659417-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"11","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/m0_66863468/article/details/125659417"}'  data-report-query='spm=1001.2101.3001.6650.11&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-11-125659417-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-11-125659417-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">本项目包含管理员、老板、司机三种角色；
+老板角色包含以下功能：
+老板登录,角色管理,用户管理,货车信息管理,运单信息管理,请假申请管理,费用报销管理,工资管理,查看工资报表,查看货车报表,新增建议等功能。管理员角色包含以下功能：
+管理员角色,角色管理,菜单管理,在线管理,日志管理,用户管理,货车信息管理,运单信息管理,请假申请管理,费用报销管理,工资信息管理,匿名建议管理,查看工资报表,查看货车报表,修改管理员资料等功能。司机角色包含以下功能：
+司机登录,货车信息管理,运单信息管理,请假申请管理,费用报销管</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/ID3461074420/article/details/132466696"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.12","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-12-132466696-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"12","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/ID3461074420/article/details/132466696"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/ID3461074420/article/details/132466696" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.12","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-12-132466696-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"12","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/ID3461074420/article/details/132466696"}'  data-report-query='spm=1001.2101.3001.6650.12&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-12-132466696-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-12-132466696-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">（附源码）springboot共享电动<em>单车</em><em>管理系统</em> 计算机毕设0840<em>1</em></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/ID3461074420" target="_blank"><span class="blog-title">ID3461074420的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">08-30</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					1279
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/ID3461074420/article/details/132466696" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.12","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-12-132466696-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"12","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/ID3461074420/article/details/132466696"}'  data-report-query='spm=1001.2101.3001.6650.12&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-12-132466696-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-12-132466696-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">普通用户管理模块：
+（<em>1</em>）用户注册登录：游客可以随时进入到系统中，对系统中的信息浏览，但是想要实现站点信息以及车辆信息操作，就必须有这个系统的账号，如果没有账号的话，可以注册用户进行相关的操作，同时用户还可以通过&ldquo;个人账户&rdquo;这以按钮对个人信息以及操作的信息进行管控。
+（2）查看共享电动<em>单车</em><em>管理系统</em>的首页信息：共享电动<em>单车</em><em>管理系统</em>的首页信息包含了公告信息、共享资讯、个人账户、个人收藏、站点信息、车辆信息、个人中心。
+（3）共享资讯：当用户点击&ldquo;共享资讯&rdquo;这一菜单按钮，会显示管理员在后台发布的所有的共享资讯<em>.</em><em>.</em></div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://hwsoft.blog.csdn.net/article/details/127061069"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.13","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-13-127061069-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"13","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://hwsoft.blog.csdn.net/article/details/127061069"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://hwsoft.blog.csdn.net/article/details/127061069" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.13","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-13-127061069-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"13","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://hwsoft.blog.csdn.net/article/details/127061069"}'  data-report-query='spm=1001.2101.3001.6650.13&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-13-127061069-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-13-127061069-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">电动自行车出租<em>管理系统</em>VS开发<em>sqlserver</em><em>数据库</em>web结构c#编程计算机网页</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/qq_41221322" target="_blank"><span class="blog-title">qq_251836457的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">09-26</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					2141
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://hwsoft.blog.csdn.net/article/details/127061069" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.13","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-13-127061069-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"13","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://hwsoft.blog.csdn.net/article/details/127061069"}'  data-report-query='spm=1001.2101.3001.6650.13&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-13-127061069-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-13-127061069-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">(6)电动车类型管理：对电动车类型信息进行添加、删除、修改和查看。(2)用户类型管理：对用户类型信息进行添加、删除、修改和查看。(9)车辆检修管理：对车辆检修信息进行添加、删除、修改和查看。(<em>1</em>)管理员管理：对管理员信息进行添加、删除、修改和查看。(7)电动车管理：对电动车信息进行添加、删除、修改和查看。(3)用户管理：对用户信息进行添加、删除、修改和查看。(4)缴费管理：对缴费信息进行添加、删除、修改和查看。(5)站点管理：对站点信息进行添加、删除、修改和查看。4<em>.</em>登录地址：login<em>.</em>aspx。</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/weixin_42814182/article/details/116108953"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.14","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-14-116108953-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"14","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/weixin_42814182/article/details/116108953"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/weixin_42814182/article/details/116108953" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.14","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-14-116108953-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"14","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/weixin_42814182/article/details/116108953"}'  data-report-query='spm=1001.2101.3001.6650.14&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-14-116108953-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-14-116108953-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">【<em>SQL</em>Planet】共享<em>单车</em>运维团队面试题</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/weixin_42814182" target="_blank"><span class="blog-title">weixin_42814182的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">04-24</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					462
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/weixin_42814182/article/details/116108953" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.14","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-14-116108953-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"14","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/weixin_42814182/article/details/116108953"}'  data-report-query='spm=1001.2101.3001.6650.14&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-14-116108953-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-14-116108953-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">表<em>1</em>：emp
+
+表2：attend
+
+<em>1</em><em>.</em>上周每天分城市分职务的在岗人数和出勤率
+出勤率=当天有效出勤人数/当天在岗人数
+（出勤会有多次编辑，相同出勤ID按gmt_modify降序排列，取最新<em>1</em>条）
+<em>Sql</em>语句：
+SELECT
+	e<em>.</em>pt,
+	e<em>.</em>city_name,
+	e<em>.</em>group_type,
+	COUNT(e<em>.</em>emp_id) AS num,
+	round(
+		COUNT(b<em>.</em>id) / COUNT(e<em>.</em>emp_id),
+		2
+	) AS attend_rate
+FROM
+	emp AS e
+LEF</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://devpress.csdn.net/v1/article/detail/126608299"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.15","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~activity-15-126608299-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"15","strategy":"2~default~BlogCommendFromBaidu~activity","dest":"https://devpress.csdn.net/v1/article/detail/126608299"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://devpress.csdn.net/v1/article/detail/126608299" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.15","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~activity-15-126608299-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"15","strategy":"2~default~BlogCommendFromBaidu~activity","dest":"https://devpress.csdn.net/v1/article/detail/126608299"}'  data-report-query='spm=1001.2101.3001.6650.15&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Eactivity-15-126608299-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Eactivity-15-126608299-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">ssm毕设项目动态个人网站8j9pz（java+VUE+Mybatis+Maven+My<em>sql</em>+sprnig）</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/m0_73138500" target="_blank"><span class="blog-title">计算机程序设计</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">08-30</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					4046
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://devpress.csdn.net/v1/article/detail/126608299" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.15","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~activity-15-126608299-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"15","strategy":"2~default~BlogCommendFromBaidu~activity","dest":"https://devpress.csdn.net/v1/article/detail/126608299"}'  data-report-query='spm=1001.2101.3001.6650.15&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Eactivity-15-126608299-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Eactivity-15-126608299-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">Jdk<em>1</em><em>.</em>8 + Tomcat8<em>.</em>5 + My<em>sql</em> + HBuilderX（Webstorm也行）+ Eclispe（IntelliJ IDEA,Eclispe,MyEclispe,Sts都支持）。ssm毕设项目动态个人网站8j9pz（java+VUE+Mybatis+Maven+My<em>sql</em>+sprnig）ssm + mybatis + Maven + Vue 等等组成，B/S模式 + Maven管理等等。2<em>.</em> 使用IDEA/Eclipse/MyEclipse导入项目，修改配置，运行项目；<em>.</em><em>.</em><em>.</em></div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/WX_BYSJ1992/article/details/143088750"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.16","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-16-143088750-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"16","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/WX_BYSJ1992/article/details/143088750"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/WX_BYSJ1992/article/details/143088750" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.16","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-16-143088750-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"16","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/WX_BYSJ1992/article/details/143088750"}'  data-report-query='spm=1001.2101.3001.6650.16&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-16-143088750-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-16-143088750-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">【关注可白嫖源码】校园共享<em>单车</em><em>管理系统</em>，怎么<em>设计</em>这个系统呢，不会的看过来</div>
+					<div class="tag">最新发布</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/WX_BYSJ1992" target="_blank"><span class="blog-title">WX_BYSJ1992的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">11-07</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					727
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/WX_BYSJ1992/article/details/143088750" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.16","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-16-143088750-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"16","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/WX_BYSJ1992/article/details/143088750"}'  data-report-query='spm=1001.2101.3001.6650.16&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-16-143088750-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-16-143088750-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">2<em>.</em> 主要功能模块
+2<em>.</em><em>1</em> <em>单车</em>租赁管理模块
+扫码开锁：用户通过App或小程序扫描<em>单车</em>二维码，进行开锁操作。
+实时计费：根据用户的骑行时间进行计费，支持按分钟或按小时计费模式。
+租赁记录：系统记录每次租赁的开始时间、结束时间、骑行时长和费用明细。
+2<em>.</em>2 车辆定位与管理模块
+GPS定位：每辆共享<em>单车</em>都配备GPS定位设备，系统可以实时显示每辆车的当前位置。
+电子围栏：系统设置指定的停车区域，限制用户只能在电子围栏内停车，违规停车会触发提醒。
+车辆调度：根据校园内的需求和<em>单车</em>分布情况，</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/m0_48958478/article/details/125510250"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.17","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-17-125510250-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"17","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/m0_48958478/article/details/125510250"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/m0_48958478/article/details/125510250" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.17","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-17-125510250-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"17","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/m0_48958478/article/details/125510250"}'  data-report-query='spm=1001.2101.3001.6650.17&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-17-125510250-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-17-125510250-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">软件建模与分析--共享<em>单车</em><em>管理系统</em></div>
+					<div class="tag">热门推荐</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/m0_48958478" target="_blank"><span class="blog-title">一顿吃不饱的博客</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">06-28</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					2万+
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/m0_48958478/article/details/125510250" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.17","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-17-125510250-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"17","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/m0_48958478/article/details/125510250"}'  data-report-query='spm=1001.2101.3001.6650.17&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-17-125510250-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-17-125510250-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">共享<em>单车</em>是一种自行车使用权租赁服务，是一种分时租赁方式，一种新型绿色环保共享经济。共享<em>单车</em>车身小巧，方便快捷，为群众的出行带来了很大的便利，解决了公共交通最后一公里的问题。不仅如此，共享<em>单车</em>费用低廉且功能齐全，又低碳环保，减少空气污染，极大的改善了交通拥堵问题。因此，为了人们更加方便的使用和管理共享<em>单车</em>，我开发了一个共享<em>单车</em><em>管理系统</em>，本文将对该系统进行详细的建模与分析。首先，在进入共享<em>单车</em><em>管理系统</em>后，系统会提示用户进行登录，若是第一次使用该系统，需要进行注册。在登录之后，系统会根据用户的位置显示附近可用的共</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_blog clearfix" data-url="https://blog.csdn.net/tMb8Z9Vdm66wH68VX1/article/details/78661126"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.18","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-18-78661126-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"18","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/tMb8Z9Vdm66wH68VX1/article/details/78661126"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://blog.csdn.net/tMb8Z9Vdm66wH68VX1/article/details/78661126" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.18","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-18-78661126-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"18","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/tMb8Z9Vdm66wH68VX1/article/details/78661126"}'  data-report-query='spm=1001.2101.3001.6650.18&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-18-78661126-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-18-78661126-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1">教你用300万共享<em>单车</em>出行数据，预测骑行目的地 !（附源码）</div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info">
+					<a href="https://blog.csdn.net/tMb8Z9Vdm66wH68VX1" target="_blank"><span class="blog-title">数据派THU</span></a>
+				</div>
+				<div class="info display-flex">
+					<span class="info-block time">11-28</span>
+					<span class="info-block read"><img class="read-img" src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					6819
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://blog.csdn.net/tMb8Z9Vdm66wH68VX1/article/details/78661126" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.18","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Rate-18-78661126-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"18","strategy":"2~default~BlogCommendFromBaidu~Rate","dest":"https://blog.csdn.net/tMb8Z9Vdm66wH68VX1/article/details/78661126"}'  data-report-query='spm=1001.2101.3001.6650.18&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-18-78661126-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-18-78661126-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1">来源：大数据挖掘DT数据分析
+
+本文长度为<em>1</em>647字，建议阅读3分钟
+
+本文为你介绍使用出行记录数据和源码预测摩拜出行目的地的方法。
+
+
+后台回复关键词&ldquo;摩拜&rdquo;&nbsp;获取本文数据及源码地址。
+
+
+摩拜<em>单车</em>在北京的<em>单车</em>投放量已经超过40万。用户可以直接在人行道上找到停放的<em>单车</em>，用手机解锁，然后骑到目的地后再把<em>单车</em>停好并锁上。因此，为了更好地调配和管理这40万辆<em>单车</em>，需要准确地预测每个</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="recommend-item-box type_c_download clearfix" data-url="https://wenku.csdn.net/doc/2vcmngzed3"  data-report-view='{"ab":"new","spm":"1001.2101.3001.6650.19","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-c_download-2~default~OPENSEARCH~Position-19-2vcmngzed3-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"19","strategy":"2~default~OPENSEARCH~Position","dest":"https://wenku.csdn.net/doc/2vcmngzed3"}'>
+	<div class="content-box">
+		<div class="content-blog display-flex">
+			<div class="title-box">
+				<a href="https://wenku.csdn.net/doc/2vcmngzed3" class="tit" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.19","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-c_download-2~default~OPENSEARCH~Position-19-2vcmngzed3-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"19","strategy":"2~default~OPENSEARCH~Position","dest":"https://wenku.csdn.net/doc/2vcmngzed3"}'  data-report-query='spm=1001.2101.3001.6650.19&utm_medium=distribute.pc_relevant.none-task-c_download-2%7Edefault%7EOPENSEARCH%7EPosition-19-2vcmngzed3-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-c_download-2%7Edefault%7EOPENSEARCH%7EPosition-19-2vcmngzed3-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+					<div class="left ellipsis-online ellipsis-online-1"></div>
+				</a>
+			</div>
+			<div class="info-box display-flex">
+				<div class="info display-flex">
+					<span class="info-block"></span>
+				</div>
+			</div>
+		</div>
+		<div class="desc-box">
+			<a href="https://wenku.csdn.net/doc/2vcmngzed3" target="_blank"  data-report-click='{"ab":"new","spm":"1001.2101.3001.6650.19","mod":"popu_387","extra":"{\"highlightScore\":0.0,\"utm_medium\":\"distribute.pc_relevant.none-task-c_download-2~default~OPENSEARCH~Position-19-2vcmngzed3-blog-125684207.235^v43^pc_blog_bottom_relevance_base5\",\"dist_request_id\":\"1744078738195_27454\"}","dist_request_id":"1744078738195_27454","ab_strategy":"landing_bge_commercial_hanlp","index":"19","strategy":"2~default~OPENSEARCH~Position","dest":"https://wenku.csdn.net/doc/2vcmngzed3"}'  data-report-query='spm=1001.2101.3001.6650.19&utm_medium=distribute.pc_relevant.none-task-c_download-2%7Edefault%7EOPENSEARCH%7EPosition-19-2vcmngzed3-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-c_download-2%7Edefault%7EOPENSEARCH%7EPosition-19-2vcmngzed3-blog-125684207.235%5Ev43%5Epc_blog_bottom_relevance_base5'>
+				<div class="desc ellipsis-online ellipsis-online-1"></div>
+			</a>
+		</div>
+	</div>
+</div>
+              </div>
+<div class="blog-footer-bottom" style="margin-top:10px;"></div>
+<script src="https://g.csdnimg.cn/common/csdn-footer/csdn-footer.js" data-isfootertrack="false" type="text/javascript"></script>
+<script type="text/javascript">
+    window.csdn.csdnFooter.options = {
+        el: '.blog-footer-bottom',
+        type: 2
+    }
+</script>          </main>
+<aside class="blog_container_aside">
+<div id="asideProfile" class="aside-box active">
+    <div class="profile-intro d-flex">
+        <div class="avatar-box d-flex justify-content-center flex-column">
+            <a href="https://blog.csdn.net/weixin_50836014" target="_blank" data-report-click='{"mod":"popu_379","spm":"3001.4121","dest":"https://blog.csdn.net/weixin_50836014","ab":"new"}'>
+                <img src="https://profile-avatar.csdnimg.cn/569f166329924ccb8e4476e87aec0e57_weixin_50836014.jpg!1" class="avatar_pic">
+            </a>
+        </div>
+        <div class="user-info d-flex flex-column profile-intro-name-box">
+            <div class="profile-intro-name-boxTop">
+                <a href="https://blog.csdn.net/weixin_50836014" target="_blank" class="" id="uid" title="一只野指针." data-report-click='{"mod":"popu_379","spm":"3001.4122","dest":"https://blog.csdn.net/weixin_50836014","ab":"new"}'>
+                    <span class="name" username="weixin_50836014">一只野指针.</span>
+                </a>
+            </div>
+            <div class="profile-intro-name-boxFooter-new">
+              <p class="profile-intro-name-leve">
+                <span>
+                  博客等级
+                </span>
+                  <img class="level" src="https://csdnimg.cn/identity/blog3.png">
+              </p>
+                <span class="profile-intro-name-years" title="已加入 CSDN 5年">码龄5年</span>
+               
+            </div>
+        </div>
+    </div>
+    <div class="profile-intro-rank-information">
+      <dl>
+        <a href="https://blog.csdn.net/weixin_50836014" data-report-click='{"mod":"1598321000_001","spm":"3001.4310"}' data-report-query="t=1">  
+            <dd><span >28</span></dd>
+            <dt>原创</dt>
+        </a>
+      </dl>
+       <dl title="126">
+        <dd>126</dd>
+        <dt>点赞</dt>
+      </dl>
+       <dl title="406">
+        <dd>406</dd>
+        <dt>收藏</dt>
+      </dl>
+      <dl id="fanBox" title="56">
+        <dd><span id="fan">56</span></dd>
+        <dt>粉丝</dt>
+      </dl>
+    </div>
+    <div class="profile-intro-name-boxOpration">
+        <div class="opt-letter-watch-box"> 
+            <a class="personal-watch bt-button" id="btnAttent" >关注</a>  
+        </div>
+        <div class="opt-letter-watch-box">
+        <a rel="nofollow" class="bt-button personal-letter" href="https://im.csdn.net/chat/weixin_50836014" target="_blank" rel="noopener">私信</a>
+        </div>
+    </div>
+</div>
+      <div class="swiper-slide-box-remuneration">
+        <a data-report-click='{"spm":"3001.9728","extra":{"index":"0"}}' data-report-view='{"spm":"3001.9728","extra":{"index":"0"}}' href="https://ai.csdn.net/" target="_blank">
+          <img src="https://i-operation.csdnimg.cn/images/2dd892a9769b4cce9c086db94eab887f.png" alt="">
+        </a>
+      </div>
+
+
+
+
+<div id="asideHotArticle" class="aside-box">
+	<h3 class="aside-title">热门文章</h3>
+	<div class="aside-content">
+		<ul class="hotArticle-list">
+			<li>
+				<a href="https://blog.csdn.net/weixin_50836014/article/details/122135430" target="_blank"  data-report-click='{"mod":"popu_541","spm":"3001.4139","dest":"https://blog.csdn.net/weixin_50836014/article/details/122135430","ab":"new"}'>
+				关于python使用playsound播放音频：指定的设备未打开，或不被 MCI 所识别。
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">11094</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://blog.csdn.net/weixin_50836014/article/details/127586953" target="_blank"  data-report-click='{"mod":"popu_541","spm":"3001.4139","dest":"https://blog.csdn.net/weixin_50836014/article/details/127586953","ab":"new"}'>
+				ubuntu20.04安装qq音乐并解决闪退问题
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">10775</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://blog.csdn.net/weixin_50836014/article/details/126709909" target="_blank"  data-report-click='{"mod":"popu_541","spm":"3001.4139","dest":"https://blog.csdn.net/weixin_50836014/article/details/126709909","ab":"new"}'>
+				关于VS2019未能正确加载“visual studio commom ide package包”
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">6801</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://blog.csdn.net/weixin_50836014/article/details/122159373" target="_blank"  data-report-click='{"mod":"popu_541","spm":"3001.4139","dest":"https://blog.csdn.net/weixin_50836014/article/details/122159373","ab":"new"}'>
+				关于python中name ‘self‘ is not defined几种处理
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">6695</span>
+                </a>
+			</li>
+			<li>
+				<a href="https://blog.csdn.net/weixin_50836014/article/details/126641501" target="_blank"  data-report-click='{"mod":"popu_541","spm":"3001.4139","dest":"https://blog.csdn.net/weixin_50836014/article/details/126641501","ab":"new"}'>
+				远程连接服务器突然失败
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/readCountWhite.png" alt="">
+					<span class="read">5658</span>
+                </a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div id="asideCategory" class="aside-box flexible-box">
+    <h3 class="aside-title">分类专栏</h3>
+    <div class="aside-content">
+        <ul>
+            <li>
+                <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11556274.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11556274.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        python
+                    </span>
+                </a>
+                <span class="special-column-num">5篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_12078059.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_12078059.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://i-blog.csdnimg.cn/blog_column_migrate/296b33bd1f00cc93d437a193d04bd211.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        Linux/Ubuntu
+                    </span>
+                </a>
+                <span class="special-column-num">3篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_12042351.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_12042351.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756724.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        深度编译器优化
+                    </span>
+                </a>
+                <span class="special-column-num">2篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11907085.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11907085.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756754.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        VS
+                    </span>
+                </a>
+                <span class="special-column-num">1篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_12042340.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_12042340.html","ab":"new"}'>
+                    <div class="special-column-bar "></div>
+                    <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756923.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        课程资源
+                    </span>
+                </a>
+                <span class="special-column-num">1篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_12042345.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_12042345.html","ab":"new"}'>
+                    <div class="special-column-bar special-column-bar-second"></div>
+                    <img src="https://i-blog.csdnimg.cn/blog_column_migrate/b9346faac8287efffed28c8b2d898da7.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        数据库
+                    </span>
+                </a>
+                <span class="special-column-num">7篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11906782.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11906782.html","ab":"new"}'>
+                    <div class="special-column-bar special-column-bar-second"></div>
+                    <img src="https://i-blog.csdnimg.cn/blog_column_migrate/7d8727d03f299ec52a833bd09cfd7652.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        Delphi
+                    </span>
+                </a>
+                <span class="special-column-num">4篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11523679.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11523679.html","ab":"new"}'>
+                    <div class="special-column-bar special-column-bar-second"></div>
+                    <img src="https://i-blog.csdnimg.cn/blog_column_migrate/6e3146f7f0d503140595af22dbe69495.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        操作系统
+                    </span>
+                </a>
+                <span class="special-column-num">3篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11828590.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11828590.html","ab":"new"}'>
+                    <div class="special-column-bar special-column-bar-second"></div>
+                    <img src="https://i-blog.csdnimg.cn/blog_column_migrate/f9e5dc48891ae58afd67623c027982e4.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        汇编asm
+                    </span>
+                </a>
+                <span class="special-column-num">2篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11906938.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11906938.html","ab":"new"}'>
+                    <div class="special-column-bar special-column-bar-second"></div>
+                    <img src="https://i-blog.csdnimg.cn/blog_column_migrate/77705ebf08717b79e971d3f5b26540c9.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        数字逻辑
+                    </span>
+                </a>
+                <span class="special-column-num">1篇</span>
+            </li>
+            <li>
+                <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11072272.html" data-report-click='{"mod":"popu_537","spm":"3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11072272.html","ab":"new"}'>
+                    <div class="special-column-bar special-column-bar-second"></div>
+                    <img src="https://i-blog.csdnimg.cn/blog_column_migrate/77705ebf08717b79e971d3f5b26540c9.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                    <span class="title oneline">
+                        算法设计
+                    </span>
+                </a>
+                <span class="special-column-num">2篇</span>
+            </li>
+        </ul>
+    </div>
+    <p class="text-center">
+        <a class="flexible-btn" data-fbox="aside-archive"><img class="look-more" src="https://csdnimg.cn/release/blogv2/dist/pc/img/arrowDownWhite.png" alt=""></a>
+    </p>
+</div>
+<div id="asideNewComments" class="aside-box">
+    <h3 class="aside-title">最新评论</h3>
+    <div class="aside-content">
+        <ul class="newcomment-list">
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/weixin_50836014/article/details/127586953#comments_35596597" data-report-click='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/weixin_50836014/article/details/127586953#comments_35596597","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/weixin_50836014/article/details/127586953#comments_35596597","ab":"new"}'>ubuntu20.04安装qq音乐并解决闪退问题</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/qq_61067831" class="user-name" target="_blank">快快快快918: </a>
+                    <span class="code-comments">神人，请问原因是啥勒？</span>
+                </p>
+            </li>
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/weixin_50836014/article/details/124880063#comments_35471718" data-report-click='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/weixin_50836014/article/details/124880063#comments_35471718","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/weixin_50836014/article/details/124880063#comments_35471718","ab":"new"}'>VS2019汇编 错误 【 MSB3721】和【A2026】 constant expected</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/2201_75390740" class="user-name" target="_blank">波伏鲸: </a>
+                    <span class="code-comments">为什么下载完以后在MSVC工具集版本里面没有出现我下载的版本可以选择</span>
+                </p>
+            </li>
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/weixin_50836014/article/details/127512029#comments_34535403" data-report-click='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/weixin_50836014/article/details/127512029#comments_34535403","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/weixin_50836014/article/details/127512029#comments_34535403","ab":"new"}'>Windows安装TVM详细教程及报错提示</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/qq_40732660" class="user-name" target="_blank">_哈哈哈哈哈哈: </a>
+                    <span class="code-comments">PS D:\tvm\build&gt; cmake -A x64 -Thost=x64 ..
+-- Building for: Ninja
+CMake Error at CMakeLists.txt:2 (project):
+  Generator
+
+    Ninja
+
+  does not support platform specification, but platform
+
+    x64
+
+  was specified.
+
+
+CMake Error: CMAKE_C_COMPILER not set, after EnableLanguage
+CMake Error: CMAKE_CXX_COMPILER not set, after EnableLanguage
+-- Configuring incomplete, errors occurred!</span>
+                </p>
+            </li>
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/weixin_50836014/article/details/122135430#comments_34463433" data-report-click='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/weixin_50836014/article/details/122135430#comments_34463433","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/weixin_50836014/article/details/122135430#comments_34463433","ab":"new"}'>关于python使用playsound播放音频：指定的设备未打开，或不被 MCI 所识别。</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/laowan_good_man" class="user-name" target="_blank">laowan_good_man: </a>
+                    <span class="code-comments">单词播放没问题，重复播放就报263错误， 楼主太强了，屌炸天</span>
+                </p>
+            </li>
+            <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/weixin_50836014/article/details/122135430#comments_34463419" data-report-click='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/weixin_50836014/article/details/122135430#comments_34463419","ab":"new"}' data-report-view='{"mod":"popu_542","spm":"3001.4231","dest":"https://blog.csdn.net/weixin_50836014/article/details/122135430#comments_34463419","ab":"new"}'>关于python使用playsound播放音频：指定的设备未打开，或不被 MCI 所识别。</a>
+                <p class="comment ellipsis">
+                    <a href="https://blog.csdn.net/laowan_good_man" class="user-name" target="_blank">laowan_good_man: </a>
+                    <span class="code-comments">很nice,重复播放就报这个错，困扰我一天了，楼主屌炸天，生一堆儿子<img src="https://g.csdnimg.cn/static/face/emoji/003.png" alt='表情包' ></span>
+                </p>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="asideArchive" class="aside-box" style="display:block!important; width:300px;">
+    <h3 class="aside-title">最新文章</h3>
+    <div class="aside-content">
+        <ul class="inf_list clearfix">
+            <li class="clearfix">
+            <a href="https://blog.csdn.net/weixin_50836014/article/details/127586953" target="_blank" data-report-click='{"mod":"popu_382","spm":"3001.4136","dest":"https://blog.csdn.net/weixin_50836014/article/details/127586953","ab":"new"}' data-report-view='{"mod":"popu_382","dest":"https://blog.csdn.net/weixin_50836014/article/details/127586953","ab":"new"}'>ubuntu20.04安装qq音乐并解决闪退问题</a>
+            </li>
+            <li class="clearfix">
+            <a href="https://blog.csdn.net/weixin_50836014/article/details/127555852" target="_blank" data-report-click='{"mod":"popu_382","spm":"3001.4136","dest":"https://blog.csdn.net/weixin_50836014/article/details/127555852","ab":"new"}' data-report-view='{"mod":"popu_382","dest":"https://blog.csdn.net/weixin_50836014/article/details/127555852","ab":"new"}'>linux(ubuntu20.04)安装tvm-0.9.0+llvm+cuda/cudnn（一步到胃版）</a>
+            </li>
+            <li class="clearfix">
+            <a href="https://blog.csdn.net/weixin_50836014/article/details/127512029" target="_blank" data-report-click='{"mod":"popu_382","spm":"3001.4136","dest":"https://blog.csdn.net/weixin_50836014/article/details/127512029","ab":"new"}' data-report-view='{"mod":"popu_382","dest":"https://blog.csdn.net/weixin_50836014/article/details/127512029","ab":"new"}'>Windows安装TVM详细教程及报错提示</a>
+            </li>
+        </ul>
+        <div class="archive-bar"></div>
+        <div class="archive-box">
+                <div class="archive-list-item"><a href="https://blog.csdn.net/weixin_50836014?type=blog&amp;year=2022&amp;month=10" target="_blank" data-report-click='{"mod":"popu_538","spm":"3001.4138","ab":"new","dest":"https://blog.csdn.net/weixin_50836014?type=blog&amp;year=2022&amp;month=10"}'><span class="year">2022年</span><span class="num">21篇</span></a></div>
+                <div class="archive-list-item"><a href="https://blog.csdn.net/weixin_50836014?type=blog&amp;year=2021&amp;month=12" target="_blank" data-report-click='{"mod":"popu_538","spm":"3001.4138","ab":"new","dest":"https://blog.csdn.net/weixin_50836014?type=blog&amp;year=2021&amp;month=12"}'><span class="year">2021年</span><span class="num">7篇</span></a></div>
+        </div>
+    </div>
+</div>
+	<div id="footerRightAds" class="isShowFooterAds">
+		<div class="aside-box">
+			<div id="kp_box_57" data-pid="57"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1076724771190722"
+     crossorigin="anonymous"></script>
+<!-- PC-博客-详情页-左下视窗-0-49 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-1076724771190722"
+     data-ad-slot="4787882818"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><img class="pre-img-lasy" data-src="https://kunyu.csdn.net/1.png?p=57&adId=1048398&adBlockFlag=1&a=1048398&c=0&k=单车管理系统——1.文档设计及sql代码说明&spm=1001.2101.3001.5001&articleId=125684207&d=1&t=3&u=d084492f9be54675899274508fc60ec2" style="display: block;width: 0px;height: 0px;"></div>
+		</div>
+	</div>
+    <!-- 详情页显示目录 -->
+<!--文章目录-->
+<div id="asidedirectory" class="aside-box">
+    <div class='groupfile' id="directory">
+        <h3 class="aside-title">目录</h3>
+        <div class="align-items-stretch group_item">
+            <div class="pos-box">
+            <div class="scroll-box">
+                <div class="toc-box"></div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+</aside>
+<script>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).parents("p.text-center").remove();
+	})
+</script>
+<script type="text/javascript"  src="https://g.csdnimg.cn/user-tooltip/2.7/user-tooltip.js"></script>
+<script type="text/javascript"  src="https://g.csdnimg.cn/user-medal/2.0.0/user-medal.js"></script>        </div>
+<div class="recommend-right align-items-stretch clearfix" id="rightAside" data-type="recommend">
+    <aside class="recommend-right_aside">
+      <div class="rightside-fixed-hide">
+                       <div class="programmer1Box">
+                    <div style="position: relative; width: 100%; height: 400px;  display: flex; justify-content: center; align-items: center; flex-direction: column; background: #fafafa; -webkit-font-smoothing: auto;">  <p style="font-size: 16px; color: rgba(0,0,0,.4);">    CSDN已关闭此广告  </p>   <a     target="_blank"     href="https://plugin.csdn.net/?utm_source=Homepage-banner-X&p=530&c=725708"     style="margin-top: 8px; color: #4ea1db; cursor: pointer; font-size: 15px; text-decoration: underline !important;">    用CSDN插件，永无广告，立即体验  </a></div>
+                </div>
+      </div>
+        <div id="recommend-right" >
+          <div class='flex-column aside-box groupfile' id="groupfile">
+              <div class="groupfile-div">
+              <h3 class="aside-title">目录</h3>
+              <div class="align-items-stretch group_item">
+                  <div class="pos-box">
+                      <div class="scroll-box">
+                          <div class="toc-box"></div>
+                      </div>
+                  </div>
+              </div>
+              </div>
+          </div>
+              <div id="recommendAdBox">
+                  <div id="kp_box_479" data-pid="479"><div class="wwads-cn wwads-vertical" data-id="149" style="max-width:300px;margin-top:10px;margin-bottom:10px;background-color: #fff;"></div> 
+<style>.wwads-img img {width: 150px; margin-top:10px}</style>
+<script type="text/javascript" charset="UTF-8" src="https://cdn.wwads.cn/js/makemoney.js" async></script><img class="pre-img-lasy" data-src="https://kunyu.csdn.net/1.png?p=479&adId=1049278&adBlockFlag=1&a=1049278&c=0&k=单车管理系统——1.文档设计及sql代码说明&spm=1001.2101.3001.4834&articleId=125684207&d=1&t=3&u=26bec736adf3403b8b41bfec184036e2" style="display: block;width: 0px;height: 0px;"></div>
+              </div>
+          <div class='aside-box kind_person d-flex flex-column'>
+                  <h3 class="aside-title">分类专栏</h3>
+                  <div class="align-items-stretch kindof_item" id="kind_person_column">
+                      <div class="aside-content">
+                          <ul>
+                              <li>
+                                  <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11556274.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11556274.html","ab":"new"}'>
+                                      <div class="special-column-bar "></div>
+                                      <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756918.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                      <span class="">
+                                          python
+                                      </span>
+                                  </a>
+                                  <span class="special-column-num">5篇</span>
+                              </li>
+                              <li>
+                                  <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_12078059.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_12078059.html","ab":"new"}'>
+                                      <div class="special-column-bar "></div>
+                                      <img src="https://i-blog.csdnimg.cn/blog_column_migrate/296b33bd1f00cc93d437a193d04bd211.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                      <span class="">
+                                          Linux/Ubuntu
+                                      </span>
+                                  </a>
+                                  <span class="special-column-num">3篇</span>
+                              </li>
+                              <li>
+                                  <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_12042351.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_12042351.html","ab":"new"}'>
+                                      <div class="special-column-bar "></div>
+                                      <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756724.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                      <span class="">
+                                          深度编译器优化
+                                      </span>
+                                  </a>
+                                  <span class="special-column-num">2篇</span>
+                              </li>
+                              <li>
+                                  <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11907085.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11907085.html","ab":"new"}'>
+                                      <div class="special-column-bar "></div>
+                                      <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756754.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                      <span class="">
+                                          VS
+                                      </span>
+                                  </a>
+                                  <span class="special-column-num">1篇</span>
+                              </li>
+                              <li>
+                                  <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_12042340.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_12042340.html","ab":"new"}'>
+                                      <div class="special-column-bar "></div>
+                                      <img src="https://i-blog.csdnimg.cn/columns/default/20201014180756923.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                      <span class="">
+                                          课程资源
+                                      </span>
+                                  </a>
+                                  <span class="special-column-num">1篇</span>
+                              </li>
+                              <li>
+                                  <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_12042345.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_12042345.html","ab":"new"}'>
+                                      <div class="special-column-bar special-column-bar-second"></div>
+                                      <img src="https://i-blog.csdnimg.cn/blog_column_migrate/b9346faac8287efffed28c8b2d898da7.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                      <span class="">
+                                          数据库
+                                      </span>
+                                  </a>
+                                  <span class="special-column-num">7篇</span>
+                              </li>
+                              <li>
+                                  <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11906782.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11906782.html","ab":"new"}'>
+                                      <div class="special-column-bar special-column-bar-second"></div>
+                                      <img src="https://i-blog.csdnimg.cn/blog_column_migrate/7d8727d03f299ec52a833bd09cfd7652.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                      <span class="">
+                                          Delphi
+                                      </span>
+                                  </a>
+                                  <span class="special-column-num">4篇</span>
+                              </li>
+                              <li>
+                                  <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11523679.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11523679.html","ab":"new"}'>
+                                      <div class="special-column-bar special-column-bar-second"></div>
+                                      <img src="https://i-blog.csdnimg.cn/blog_column_migrate/6e3146f7f0d503140595af22dbe69495.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                      <span class="">
+                                          操作系统
+                                      </span>
+                                  </a>
+                                  <span class="special-column-num">3篇</span>
+                              </li>
+                              <li>
+                                  <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11828590.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11828590.html","ab":"new"}'>
+                                      <div class="special-column-bar special-column-bar-second"></div>
+                                      <img src="https://i-blog.csdnimg.cn/blog_column_migrate/f9e5dc48891ae58afd67623c027982e4.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                      <span class="">
+                                          汇编asm
+                                      </span>
+                                  </a>
+                                  <span class="special-column-num">2篇</span>
+                              </li>
+                              <li>
+                                  <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11906938.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11906938.html","ab":"new"}'>
+                                      <div class="special-column-bar special-column-bar-second"></div>
+                                      <img src="https://i-blog.csdnimg.cn/blog_column_migrate/77705ebf08717b79e971d3f5b26540c9.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                      <span class="">
+                                          数字逻辑
+                                      </span>
+                                  </a>
+                                  <span class="special-column-num">1篇</span>
+                              </li>
+                              <li>
+                                  <a class="clearfix special-column-name"  href="https://blog.csdn.net/weixin_50836014/category_11072272.html" data-report-click='{"mod":"popu_537","spm":"1001.2101.3001.4137","strategy":"pc付费专栏左侧入口","dest":"https://blog.csdn.net/weixin_50836014/category_11072272.html","ab":"new"}'>
+                                      <div class="special-column-bar special-column-bar-second"></div>
+                                      <img src="https://i-blog.csdnimg.cn/blog_column_migrate/77705ebf08717b79e971d3f5b26540c9.png?x-oss-process=image/resize,m_fixed,h_64,w_64" alt="" onerror="this.src='https://i-blog.csdnimg.cn/columns/default/20201014180756922.png?x-oss-process=image/resize,m_fixed,h_64,w_64'">
+                                      <span class="">
+                                          算法设计
+                                      </span>
+                                  </a>
+                                  <span class="special-column-num">2篇</span>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+          </div>
+        </div>
+    </aside>
+</div>
+
+<div class="recommend-right1  align-items-stretch clearfix" id="rightAsideConcision" data-type="recommend">
+    <aside class="recommend-right_aside">
+        <div id="recommend-right-concision" >
+            <div class='flex-column aside-box groupfile' id="groupfileConcision">
+                <div class="groupfile-div1">
+                <h3 class="aside-title">目录</h3>
+                <div class="align-items-stretch group_item">
+                    <div class="pos-box">
+                        <div class="scroll-box">
+                            <div class="toc-box"></div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+      </div>
+      <div class="mask-dark"></div>
+        <script type="text/javascript">
+        var timert = setInterval(function() {
+          sideToolbar = $(".csdn-side-toolbar");
+          if (sideToolbar.length > 0) {
+            sideToolbar.css('cssText', 'bottom:64px !important;')
+            clearInterval(timert);
+          }
+        }, 200);
+        </script>
+      <div class="skin-boxshadow"></div>
+      <div class="directory-boxshadow"></div>
+<div class="comment-side-box-shadow comment-side-tit-close" id="commentSideBoxshadow">
+<div class="comment-side-content">
+	<div class="comment-side-tit">
+		<span class="comment-side-tit-count">评论</span>	
+	<img class="comment-side-tit-close" src="https://csdnimg.cn/release/blogv2/dist/pc/img/closeBt.png"></div>
+	<div id="pcCommentSideBox" class="comment-box comment-box-new2 unlogin-comment-box-new" style="display:none">
+	</div>
+	<div id="pcFlodCommentSideBox" class="pc-flodcomment-sidebox">
+		<div class="comment-fold-tit"><span id="lookUnFlodComment" class="back"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/commentArrowLeftWhite.png" alt=""></span>被折叠的&nbsp;<span class="count"></span>&nbsp;条评论
+		 <a href="https://blogdev.blog.csdn.net/article/details/122245662" class="tip" target="_blank">为什么被折叠?</a>
+		 <a href="https://bbs.csdn.net/forums/FreeZone" class="park" target="_blank">
+		 <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/iconPark.png">到【灌水乐园】发言</a>                                
+		</div>
+		<div class="comment-fold-content"></div>
+		<div id="lookBadComment" class="look-bad-comment side-look-comment">
+			<a class="look-more-comment">查看更多评论<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/commentArrowDownWhite.png" alt=""></a>
+		</div>
+	</div>
+</div>
+<div class="comment-rewarddialog-box">
+  <div class="form-box">
+    <div class="title-box">
+      添加红包
+      <a class="btn-form-close"></a>
+    </div>
+    <form id="commentRewardForm">
+      <div class="ipt-box">
+        <label for="txtName">祝福语</label>
+        <div class="ipt-btn-box">
+          <input type="text" name="name" id="txtName" autocomplete="off" maxlength="50">
+          <a class="btn-ipt btn-random"></a>
+        </div>
+        <p class="notice">请填写红包祝福语或标题</p>
+      </div>
+      <div class="ipt-box">
+        <label for="txtSendAmount">红包数量</label>
+        <div class="ipt-txt-box">
+          <input type="text" name="sendAmount" maxlength="4" id="txtSendAmount" placeholder="请填写红包数量(最小10个)" autocomplete="off">
+          <span class="after-txt">个</span>
+        </div>
+        <p class="notice">红包个数最小为10个</p>
+      </div>
+      <div class="ipt-box">
+        <label for="txtMoney">红包总金额</label>
+        <div class="ipt-txt-box error">
+          <input type="text" name="money" maxlength="5" id="txtMoney" placeholder="请填写总金额(最低5元)" autocomplete="off">
+          <span class="after-txt">元</span>
+        </div>
+        <p class="notice">红包金额最低5元</p>
+      </div>
+      <div class="balance-info-box">
+        <label>余额支付</label>
+        <div class="balance-info">
+          当前余额<span class="balance">3.43</span>元
+          <a href="https://i.csdn.net/#/wallet/balance/recharge" class="link-charge" target="_blank">前往充值 ></a>
+        </div>
+      </div>
+      <div class="opt-box">
+        <div class="pay-info">
+          需支付：<span class="price">10.00</span>元
+        </div>
+        <button type="button" class="ml-auto btn-cancel">取消</button>
+        <button type="button" class="ml8 btn-submit" disabled="true">确定</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="rr-guide-box">
+  <div class="rr-first-box">
+    <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/guideRedReward02.png" alt="">
+    <button class="btn-guide-known next">下一步</button>
+  </div>
+  <div class="rr-second-box">
+    <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/guideRedReward03.png" alt="">
+    <button class="btn-guide-known known">知道了</button>
+  </div>
+</div>
+</div>
+
+<div class="redEnvolope" id="redEnvolope">
+  <div class="env-box">
+    <div class="env-container">
+      <div class="pre-open" id="preOpen">
+        <div class="top">
+          <header>
+            <img class="clearTpaErr" :src="redpacketAuthor.avatar" alt="" />
+            <div class="author">成就一亿技术人!</div>
+          </header>
+          <div class="bot-icon"></div>
+        </div>
+        <footer>
+          <div class="red-openbtn open-start"></div>
+          <div class="tip">
+            领取后你会自动成为博主和红包主的粉丝
+            <a class="rule" target="_blank">规则</a>
+          </div>
+        </footer>
+      </div>
+      <div class="opened" id="opened">
+        <div class="bot-icon">
+          <header>
+            <a class="creatorUrl" href="" target="_blank">
+              <img class="clearTpaErr" src="https://profile-avatar.csdnimg.cn/default.jpg!2" alt="" />
+            </a>
+            <div class="author">
+              <div class="tt">hope_wisdom</div> 发出的红包
+            </div>
+          </header>
+        </div>
+        <div class="receive-box">
+          <header></header>
+          <div class="receive-list">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="close-btn"></div>
+  </div>
+</div>
+<div id="rewardNew" class="reward-popupbox-new">
+	<p class="rewad-title">打赏作者<span class="reward-close"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/closeBt.png"></span></p>
+	<dl class="profile-box">
+		<dd>
+		<a href="https://blog.csdn.net/weixin_50836014" data-report-click='{"mod":"popu_379","dest":"https://blog.csdn.net/weixin_50836014","ab":"new"}'>
+			<img src="https://profile-avatar.csdnimg.cn/569f166329924ccb8e4476e87aec0e57_weixin_50836014.jpg!1" class="avatar_pic">
+		</a>
+		</dd>
+		<dt>
+			<p class="blog-name">一只野指针.</p>
+			<p class="blog-discript">你的鼓励将是我创作的最大动力</p>
+		</dt>
+	</dl>
+	<div class="reward-box-new">
+			<div class="reward-content"><div class="reward-right"></div></div>
+	</div>
+	<div class="money-box">
+    <span class="choose-money choosed" data-id="1">¥1</span>
+    <span class="choose-money " data-id="2">¥2</span>
+    <span class="choose-money " data-id="4">¥4</span>
+    <span class="choose-money " data-id="6">¥6</span>
+    <span class="choose-money " data-id="10">¥10</span>
+    <span class="choose-money " data-id="20">¥20</span>
+	</div>
+	<div class="sure-box">
+		<div class="sure-box-money">
+			<div class="code-box">
+				<div class="code-num-box">
+					<span class="code-name">扫码支付：</span><span class="code-num">¥1</span>
+				</div>
+				<div class="code-img-box">
+					<div class="renovate">
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/pay-time-out.png">
+					<span>获取中</span>
+					</div>
+				</div>
+				<div class="code-pay-box">
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/newWeiXin.png" alt="">
+					<img src="https://csdnimg.cn/release/blogv2/dist/pc/img/newZhiFuBao.png" alt="">
+					<span>扫码支付</span>
+				</div>
+			</div>
+		</div>
+		<div class="sure-box-blance">
+			<p class="tip">您的余额不足，请更换扫码支付或<a target="_blank" data-report-click='{"mod":"1597646289_003","spm":"1001.2101.3001.4302"}' href="https://i.csdn.net/#/wallet/balance/recharge?utm_source=RewardVip" class="go-invest">充值</a></p>
+			<p class="is-have-money"><a class="reward-sure">打赏作者</a></p>
+		</div>
+	</div>
+</div>
+      
+      <div class="pay-code">
+      <div class="pay-money">实付<span class="pay-money-span" data-nowprice='' data-oldprice=''>元</span></div>
+      <div class="content-blance"><a class="blance-bt" href="javascript:;">使用余额支付</a></div>
+      <div class="content-code">
+        <div id="payCode" data-id="">
+          <div class="renovate">
+            <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/pay-time-out.png">
+            <span>点击重新获取</span>
+          </div>
+        </div>
+        <div class="pay-style"><span><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/weixin.png"></span><span><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/zhifubao.png"></span><span><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/jingdong.png"></span><span class="text">扫码支付</span></div>
+      </div>
+      <div class="bt-close">
+        <svg t="1567152543821" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10924" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="12">
+          <defs>
+            <style type="text/css"></style>
+          </defs>
+          <path d="M512 438.378667L806.506667 143.893333a52.032 52.032 0 1 1 73.6 73.621334L585.621333 512l294.485334 294.485333a52.074667 52.074667 0 0 1-73.6 73.642667L512 585.621333 217.514667 880.128a52.053333 52.053333 0 1 1-73.621334-73.642667L438.378667 512 143.893333 217.514667a52.053333 52.053333 0 1 1 73.621334-73.621334L512 438.378667z" fill="" p-id="10925"></path>
+        </svg>
+      </div>
+      <div class="pay-balance">
+        <input type="radio" class="pay-code-radio" data-type="details">
+        <span class="span">钱包余额</span>
+          <span class="balance" style="color:#FC5531;font-size:14px;">0</span>
+          <div class="pay-code-tile">
+            <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/pay-help.png" alt="">
+            <div class="pay-code-content">
+              <div class="span">
+                <p class="title">抵扣说明：</p>
+                <p> 1.余额是钱包充值的虚拟货币，按照1:1的比例进行支付金额的抵扣。<br> 2.余额无法直接购买下载，可以购买VIP、付费专栏及课程。</p>
+              </div>
+            </div>
+          </div>
+      </div>
+      <a class="pay-balance-con" href="https://i.csdn.net/#/wallet/balance/recharge" target="_blank"><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/recharge.png" alt=""><span>余额充值</span></a>
+    </div>
+    <div style="display:none;">
+      <img src="" onerror='setTimeout(function(){if(!/(csdn.net|iteye.com|baiducontent.com|googleusercontent.com|360webcache.com|sogoucdn.com|bingj.com|baidu.com)$/.test(window.location.hostname)){window.location.href="\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x77\x77\x2e\x63\x73\x64\x6e\x2e\x6e\x65\x74"}},3000);'>
+    </div>
+    <div class="keyword-dec-box" id="keywordDecBox"></div>
+  </body>
+  <script src="https://csdnimg.cn/release/blogv2/dist/components/js/axios-83fa28cedf.min.js" type="text/javascript"></script>
+  <script src="https://csdnimg.cn/release/blogv2/dist/components/js/pc_wap_highlight-8defd55d6e.min.js" type="text/javascript"></script>
+  <script src="https://csdnimg.cn/release/blogv2/dist/components/js/pc_wap_common-3b5f0393dc.min.js" type="text/javascript"></script>
+  <script src="https://csdnimg.cn/release/blogv2/dist/components/js/edit_copy_code-3d1af13f20.min.js" type="text/javascript"></script>
+  <script src="https://g.csdnimg.cn/lib/cboxEditor/1.1.6/embed-editor.min.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://g.csdnimg.cn/lib/cboxEditor/1.1.6/embed-editor.min.css">
+  <link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.6.12/ckeditor/plugins/codesnippet/lib/highlight/styles/atom-one-dark.css">
+  <script src="https://g.csdnimg.cn/user-accusation/1.0.6/user-accusation.js" type="text/javascript"></script>
+  <script>
+    // 全局声明
+    if (window.csdn === undefined) {
+      window.csdn = {};
+    }
+    var sideToolbarOpt = {}
+
+    $(function() {
+      $(document).on('click', "#toolReportBtnHideNormal,#toolReportBtnHide", function() {
+        window.csdn.loginBox.key({
+          biz: 'blog',
+          subBiz: 'other_service',
+          cb: function() {
+            window.csdn.feedback({
+              "type": 'blog',
+              "rtype": 'article',
+              "rid": articleId,
+              "reportedName": username,
+              "submitOptions": {
+                "title": articleTitle,
+                "contentUrl": articleDetailUrl
+              },
+              "callback": function() {
+                showToast({
+                  text: "感谢您的举报，我们会尽快审核！",
+                  bottom: '10%',
+                  zindex: 9000,
+                  speed: 500,
+                  time: 1500
+                })
+              }
+            })
+          }
+        })
+      });
+    })
+      window.csdn.sideToolbar = {
+        options: {
+          ...sideToolbarOpt,
+          theme: 'white',
+        }
+      }
+  </script>
+    <script src="https://g.csdnimg.cn/baidu-search/1.0.12/baidu-search.js" type="text/javascript"></script>
+  <script src="https://csdnimg.cn/release/download/old_static/js/qrcode.js"></script>
+  <script src="https://g.csdnimg.cn/lib/qrcode/1.0.0/qrcode.min.js"></script>
+  <script src="https://g.csdnimg.cn/user-ordercart/3.0.1/user-ordercart.js" type="text/javascript"></script>
+  <script src="https://g.csdnimg.cn/user-ordertip/5.0.3/user-ordertip.js" type="text/javascript"></script>
+  <script src="https://g.csdnimg.cn/order-payment/4.0.5/order-payment.js" type="text/javascript"></script>
+  <script src="https://csdnimg.cn/release/blogv2/dist/pc/js/common-20500becfb.min.js" type="text/javascript"></script>
+  <script src="https://csdnimg.cn/release/blogv2/dist/pc/js/detail-136883cecc.min.js" type="text/javascript"></script>
+  <script src="https://csdnimg.cn/release/blogv2/dist/pc/js/column-fc546048d8.min.js" type="text/javascript"></script>
+    <script src="https://g.csdnimg.cn/side-toolbar/3.6/side-toolbar.js" type="text/javascript"></script>
+  <script src="https://g.csdnimg.cn/copyright/1.0.4/copyright.js" type="text/javascript"></script>
+  <script>
+    $(".MathJax").remove();
+    if ($('div.markdown_views pre.prettyprint code.hljs').length > 0) {
+      $('div.markdown_views')[0].className = 'markdown_views';
+    }
+  </script>
+  <script type="text/javascript" src="https://csdnimg.cn/release/blog_mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      "HTML-CSS": {
+        linebreaks: { automatic: true, width: "94%container" },
+        imageFont: null
+      },
+      tex2jax: {
+      preview: "none",
+      ignoreClass:"title-article"
+      },
+      mml2jax: {
+      preview: 'none'
+      }
+    });
+  </script>
+<script type="text/javascript" crossorigin src="https://g.csdnimg.cn/common/csdn-login-box/csdn-login-box.js"></script></html>
