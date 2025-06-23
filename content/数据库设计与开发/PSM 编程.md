@@ -11,7 +11,7 @@ PSM 编程是一种在数据库系统中存储和执行程序代码的方式 [5]
 5.  **控制流语句**：支持条件判断（`IF...THEN...ELSEIF...END IF`）和各种循环结构（`LOOP...END LOOP`, `WHILE...DO...END WHILE`, `REPEAT...UNTIL...END REPEAT`），以及跳出循环的 `LEAVE` 语句 [15, 18, 20]。
 6.  **SQL 语句的执行**：
     * 对于返回单个值或单个元组的查询，可以直接用于变量赋值或使用 `SELECT...INTO` 语句获取结果 [25, 27]。
-    * 对于返回多个元组的查询，需要使用 **游标 (Cursor)** 来逐行处理结果集。这包括声明游标 (`DECLARE c CURSOR`), 打开游标 (`OPEN c`), 提取数据 (`FETCH FROM c INTO`), 以及关闭游标 (`CLOSE c`) [28-30]。
+    * 对于返回多个元组的查询，需要使用 **[[游标]] (Cursor)** 来逐行处理结果集。这包括声明游标 (`DECLARE c CURSOR`), 打开游标 (`OPEN c`), 提取数据 (`FETCH FROM c INTO`), 以及关闭游标 (`CLOSE c`) [28-30]。
     * 在处理游标循环时，通常会检查 `SQLSTATE` 状态变量（或声明 `CONDITION`）来判断是否已读取完所有数据 [32-34]。
 7.  **调用**：存储过程可以使用 `CALL` 语句来调用 [12]。
 
