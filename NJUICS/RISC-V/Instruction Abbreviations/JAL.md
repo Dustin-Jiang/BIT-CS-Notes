@@ -1,0 +1,3 @@
+Jump and Link. 
+
+The jump and link (JAL) instruction uses the J-type format, where the imm20 encodes a signed offset in multiples of 2 bytes. The offset is sign-extended and added to the address of the jump instruction to form the jump target address. Jumps can therefore target a ±1 MiB range. JAL stores the address of the instruction following the jump (pc+4) into register rd. The standard software calling convention uses x1 as the return address register and x5 as an alternate link register.

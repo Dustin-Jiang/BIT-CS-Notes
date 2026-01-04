@@ -1,0 +1,2 @@
+RISC-V base ISAs have either little-endian or big-endian memory systems, with the privileged
+architecture further defining bi-endian operation. Instructions are stored in memory as a sequence of **16-bit little-endian** parcels, regardless of memory system endianness. 
